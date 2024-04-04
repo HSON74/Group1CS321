@@ -43,4 +43,4 @@ buildNumber.properties
 *.lst
 
 #The .vs
-.vs
+.vscode
