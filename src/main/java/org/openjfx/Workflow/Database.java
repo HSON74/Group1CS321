@@ -17,19 +17,19 @@ import org.openjfx.Business.Form;
 import org.openjfx.Business.Immigrant;
 
 /**
- * This base class object will for handling two 
- * particular database. One is for immigrant and the 
- * another is for dependent. 
+ * This base class object will for handling two
+ * particular database. One is for immigrant and the
+ * another is for dependent.
  */
 public class Database {
-    //Private class & variable.
-    private int immigrantPIDGenerate; //Generate a immigrant pid
-    private int dependentPIDGenerate; //Generate a dependent pid
+    // Private class & variable.
+    private int immigrantPIDGenerate; // Generate a immigrant pid
+    private int dependentPIDGenerate; // Generate a dependent pid
 
-    private String dataNameForImmigrant; //The immigrant record the system current accessing.
-    private String dataNameForDependent; //The dependent record the system current accessing.
+    private String dataNameForImmigrant; // The immigrant record the system current accessing.
+    private String dataNameForDependent; // The dependent record the system current accessing.
 
-    //protected class & variable.
+    // protected class & variable.
     protected ArrayList<Immigrant> databaseFormsImmigrant;
     protected ArrayList<Dependent> databaseFormsDependent;
 
@@ -52,7 +52,8 @@ public class Database {
         System.out.println(dataNameForImmigrant);
         System.out.println(dataNameForDependent);
         try {
-            //Access to the immgrint record and create a temp database array for application.
+            // Access to the immgrint record and create a temp database array for
+            // application.
             File datafile = new File(dataNameForImmigrant);
             Scanner scr;
             this.databaseFormsImmigrant = new ArrayList<Immigrant>();
@@ -71,7 +72,8 @@ public class Database {
                 System.err.println("File Exist not exist");
                 writer.close();
             }
-            //Access to the dependent record and create a temp database array for application.
+            // Access to the dependent record and create a temp database array for
+            // application.
             Scanner dscr;
             File datafiled = new File(dataNameForDependent);
             this.databaseFormsDependent = new ArrayList<Dependent>();
@@ -101,8 +103,10 @@ public class Database {
 
     }
 
-    /* A method for the add datas from From class format
-    into the system record. */
+    /*
+     * A method for the add datas from From class format
+     * into the system record.
+     */
     public boolean addData(Form form) {
         if (form == null) {
             return false;
@@ -119,7 +123,7 @@ public class Database {
     public boolean checkData(int iPID, int dPID, String result) {
         Immigrant myImmigrant = getDataImmigrant(iPID);
         Dependent myDependent = getDataDependent(dPID);
-        if(myImmigrant == null && myDependent == null){
+        if (myImmigrant == null && myDependent == null) {
             result = "both is not system";
             return true;
         }
@@ -153,6 +157,7 @@ public class Database {
         }
         return null;
     }
+
     /*
      * The method will search the the Database froms for
      * dependent using the integer variable iPID, which
@@ -169,6 +174,7 @@ public class Database {
         }
         return null;
     }
+
     /*
      * The method will search the the Database froms for
      * immigrant using the integer variable social security number, which
@@ -185,6 +191,7 @@ public class Database {
         }
         return null;
     }
+
     /*
      * The method will search the the Database froms for
      * Dependent using the integer variable social security number, which
@@ -213,6 +220,7 @@ public class Database {
         dependentPIDGenerate++;
         return oldNumber;
     }
+
     /*
      * A method that save if the form information don't exist in the system.
      */
@@ -224,20 +232,19 @@ public class Database {
         Dependent dForm = inputForm.getDependent();
         String status = "";
         if (checkData(iForm.getImmigrantPid(), dForm.getDependentPid(), status)) {
-            if(status.equalsIgnoreCase("both is not system")){
-                dFrom.setPrevClaim(dForm.getPrevClaim());
-                iFrom.setImmigrantPid(dForm.getDataDependent)
-                addImmigrantToData(iForm); 
+            if (status.equalsIgnoreCase("both is not system")) {
+                dForm.setPrevClaim(dForm.getPrevClaim());
+                iForm.setImmigrantPid(dForm.getDependentPid());
+                addImmigrantToData(iForm);
                 addDependentToData(dForm);
-            }else{
+            } else {
                 updateImmigrant(iForm);
                 updateDependent(dForm);
             }
-        }else{
-            if(status.equalsIgnoreCase("Immigrant information is not in system")){ 
-                dForm = getIm
+        } else {
+            if (status.equalsIgnoreCase("Immigrant information is not in system")) {
 
-            }else{
+            } else {
 
             }
         }
