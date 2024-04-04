@@ -224,7 +224,7 @@ public class Database {
     /*
      * A method that save if the form information don't exist in the system.
      */
-    private boolean saveData(Form inputForm) {
+    public boolean saveData(Form inputForm) {
         if (inputForm.getDependent() == null || inputForm.getImmigrant() == null) {
             return false;
         }
