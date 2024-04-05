@@ -1,18 +1,14 @@
 package org.openjfx.Workflow;
 
-import org.openjfx.Business.Dependent;
 import org.openjfx.Business.Form;
-import org.openjfx.Business.Immigrant;
+import org.openjfx.Business.FormStatus;
 
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollBar;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -29,9 +25,14 @@ public class Approval {
     private Database database;
     private ApprovalStatus approvalStatus;
     private Workflow approvalWorkflow;
+    @SuppressWarnings("unused")
+    private boolean isAdd;
 
     // Application Scene update
     public Scene approvalScene;
+    public Scene emailScene;
+    public Scene approvalCompleteScene;
+    public Scene rejectScene;
 
     /* Set the the application when the user sumbit the form for review */
     public void Adisplay(Form form, Workflow system, Stage primaryStage) {
@@ -39,7 +40,7 @@ public class Approval {
             System.out.println("Null form");
             return;
         }
-        if(system == null){
+        if (system == null) {
             System.out.println("Null system");
             return;
         }
@@ -200,14 +201,33 @@ public class Approval {
 
         sumbitButton.setOnAction(
                 e -> {
-                    connection();
+                    if (!this.isAdd) {
+
+                        this.isAdd = connection();
+                        Stage minStage = new Stage();
+                        minStage.setTitle("Result of Form");
+                        GridPane tempGridPane = new GridPane();
+                        TextArea myTextArea = new TextArea("Contragulation, you complete the form");
+                        myTextArea.setWrapText(true);
+                        tempGridPane.add(myTextArea, 1, 1);
+                        approvalGridPane.setScaleShape(false);
+                        approvalCompleteScene = new Scene(tempGridPane, 250, 250);
+                        minStage.setScene(approvalCompleteScene);
+                        minStage.showAndWait();
+                    }
+                    if (isAdd) {
+                        Stage minStage = new Stage();
+                        minStage.setTitle("Result of Form");
+                        GridPane tempGridPane = new GridPane();
+                        approvalCompleteScene = new Scene(tempGridPane, 250, 250);
+                        minStage.setScene(approvalCompleteScene);
+                        minStage.showAndWait();
+                    }
                 });
         rejectButton.setOnAction(e -> {
-
             approvalWorkflow.getReview().rDisplay(this.getForm(), this.getWorkflow(), primaryStage);
-            primaryStage.setScene(approvalWorkflow.getScene(0));
+            primaryStage.setScene(approvalWorkflow.getReview().rScene);
         });
-
 
         // Scene set to application window
         approvalScene = new Scene(approvalGridPane, 1920, 1080);
@@ -219,7 +239,7 @@ public class Approval {
     }
 
     public Approval(String dataBase, Form form) {
-
+        this.isAdd = false;
         this.approvalForm = form;
         setApprovalStatus(ApprovalStatus.INPROGRESS);
         setDatabase(dataBase, form);
@@ -235,25 +255,176 @@ public class Approval {
             System.err.println("The immigrant or dependent form ");
             return false;
         }
-        int iPid = approvalForm.getImmigrant().getImmigrantPid();
-        int dPid = approvalForm.getDependent().getDependentPid();
-        return database.checkData(iPid, dPid, status);
+        String informationForCheck = "";
+        if (fullCheck(informationForCheck)) {
+            int iPid = approvalForm.getImmigrant().getImmigrantPid();
+            int dPid = approvalForm.getDependent().getDependentPid();
+            database.checkData(iPid, dPid, status);
+            return true;
+        } else {
+            GridPane myReject = new GridPane();
+            return false;
+        }
     }
 
+    /*
+     * A method that will coonection, add, or
+     * update based on the if the infromation is
+     * in the system record.
+     */
     public boolean connection() {
         String status = "";
         if (checkFrom(status)) {
             setApprovalStatus(ApprovalStatus.COMPLETE);
-            approvalForm.getImmigrant().setDependentPid(approvalForm.getDependent().getDependentPid());
             return database.addData(approvalForm);
         } else {
             return false;
         }
     }
 
-    public void setPID(Form form) {
-        form.getImmigrant().setImmigrantPid(database.giveImmigrantPid());
-        form.getDependent().setDependentPid(database.giveDependentPid());
+    /**
+     * This method will full check the form one later te
+     * 
+     * @return boolean if the all importent information correctly enter
+     */
+    private boolean fullCheck(String missing) {
+        missing = "";
+        if (approvalForm == null) {
+            missing = "Form is null";
+            return false;
+        }
+        if (approvalForm.getFormStatus() != FormStatus.COMPLETE) {
+            missing = "Form is not complete";
+            return false;
+        }
+        if (approvalForm.getImmigrant() == null && approvalForm.getDependent() == null) {
+            missing = "Form is don't have Immigrant and Dependent information.";
+            return false;
+        }
+        if (approvalForm.getImmigrant() != null) {
+            if (approvalForm.getImmigrant().getFirstName() == null) {
+                if (missing.equalsIgnoreCase("")) {
+                    missing = "Immigrant Field: First Name";
+                } else {
+                    missing = "Immigrant Field: First Name";
+                }
+            } else if (approvalForm.getImmigrant().getLastName() == null) {
+                if (missing.equalsIgnoreCase("")) {
+                    missing = "Immigrant Field: Last Name";
+                } else {
+                    missing = ", Last Name";
+                }
+            } else if (approvalForm.getImmigrant().getAge() <= 0) {
+                if (missing.equalsIgnoreCase("")) {
+                    missing = "Immigrant Field: Age";
+                } else {
+                    missing = ", Age";
+                }
+            } else if (approvalForm.getImmigrant().getAddress() == null) {
+                if (missing.equalsIgnoreCase("")) {
+                    missing = "Immigrant Field: Address";
+                } else {
+                    missing = ", Address";
+                }
+            } else if (approvalForm.getImmigrant().getSSNumber() < 0) {
+                if (missing.equalsIgnoreCase("")) {
+                    missing = "Immigrant Field: Social Security Number";
+                } else {
+                    missing = ", Social Security Number";
+                }
+            } else if (approvalForm.getImmigrant().getRace() == null) {
+                if (missing.equalsIgnoreCase("")) {
+                    missing = "Immigrant Field: Race";
+                } else {
+                    missing = ", Race";
+                }
+            } else if (approvalForm.getImmigrant().getGender() == null) {
+                if (missing.equalsIgnoreCase("")) {
+                    missing = "Immigrant Field: Gender";
+                } else {
+                    missing = ", Gender";
+                }
+            } else if (approvalForm.getImmigrant().getPhoneNumber() == null) {
+                if (missing.equalsIgnoreCase("")) {
+                    missing = "Immigrant Field: Phone Number";
+                } else {
+                    missing = ", Phone Number";
+                }
+            } else if (approvalForm.getImmigrant().getImmigrantPid() <= 0) {
+                if (missing.equalsIgnoreCase("")) {
+                    missing = "Immigrant Field: Immigrant PID";
+                } else {
+                    missing = ", Immigrant PID";
+                }
+            } else if (approvalForm.getImmigrant().getDependentPid() <= 0) {
+                if (missing.equalsIgnoreCase("")) {
+                    missing = "Immigrant Field: Dependent PID";
+                } else {
+                    missing = ", Dependent PID";
+                }
+            }
+        }
+        if (approvalForm.getDependent() != null) {
+            if (!missing.equalsIgnoreCase("")) {
+                missing = "; and ";
+            }
+            if (approvalForm.getDependent().getFirstName() == null) {
+                if (missing.equalsIgnoreCase("")) {
+                    missing = "Dependent Field: First Name";
+                } else {
+                    missing = "Dependent Field: First Name";
+                }
+            } else if (approvalForm.getDependent().getLastName() == null) {
+                if (missing.equalsIgnoreCase("")) {
+                    missing = "Dependent Field: Last Name";
+                } else {
+                    missing = ", Last Name";
+                }
+            } else if (approvalForm.getDependent().getAge() <= 0) {
+                if (missing.equalsIgnoreCase("")) {
+                    missing = "Dependent Field: Age";
+                } else {
+                    missing = ", Age";
+                }
+            } else if (approvalForm.getDependent().getAddress() == null) {
+                if (missing.equalsIgnoreCase("")) {
+                    missing = "Dependent Field: Address";
+                } else {
+                    missing = ", Address";
+                }
+            } else if (approvalForm.getDependent().getSSNumber() < 0) {
+                if (missing.equalsIgnoreCase("")) {
+                    missing = "Dependent Field: Social Security Number";
+                } else {
+                    missing = ", Social Security Number";
+                }
+            } else if (approvalForm.getDependent().getRace() == null) {
+                if (missing.equalsIgnoreCase("")) {
+                    missing = "Dependent Field: Race";
+                } else {
+                    missing = ", Race";
+                }
+            } else if (approvalForm.getDependent().getGender() == null) {
+                if (missing.equalsIgnoreCase("")) {
+                    missing = "Dependent Field: Gender";
+                } else {
+                    missing = ", Gender";
+                }
+            } else if (approvalForm.getDependent().getPhoneNumber() == null) {
+                if (missing.equalsIgnoreCase("")) {
+                    missing = "Dependent Field: Phone Number";
+                } else {
+                    missing = ", Phone Number";
+                }
+            } else if (approvalForm.getDependent().getDependentPid() <= 0) {
+                if (missing.equalsIgnoreCase("")) {
+                    missing = "Dependent Field: Dependent PID";
+                } else {
+                    missing = ", Dependent PID";
+                }
+            }
+        }
+        return missing.equalsIgnoreCase("");
     }
 
     /* Setter and Getter for Approval Class */
@@ -295,5 +466,4 @@ public class Approval {
     public Scene getApprovalScene() {
         return approvalScene;
     }
-
 }

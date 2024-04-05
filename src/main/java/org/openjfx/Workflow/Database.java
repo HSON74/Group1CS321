@@ -23,9 +23,6 @@ import org.openjfx.Business.Immigrant;
  */
 public class Database {
     // Private class & variable.
-    private int immigrantPIDGenerate; // Generate a immigrant pid
-    private int dependentPIDGenerate; // Generate a dependent pid
-
     private String dataNameForImmigrant; // The immigrant record the system current accessing.
     private String dataNameForDependent; // The dependent record the system current accessing.
 
@@ -115,7 +112,7 @@ public class Database {
             return false;
         }
         boolean addDatatoFile = saveData(form);
-        System.out.println("add to system");
+        // System.out.println("add to system");
         return addDatatoFile;
     }
 
@@ -134,7 +131,7 @@ public class Database {
         }
         if (myDependent == null) {
             System.err.println("Dependent information is not in system");
-            result = "Immigrant is not system";
+            result = "Dependent is not system";
             return false;
         }
         result = "Information need update";
@@ -209,22 +206,10 @@ public class Database {
         return null;
     }
 
-    public int giveImmigrantPid() {
-        int oldNumber = immigrantPIDGenerate;
-        immigrantPIDGenerate++;
-        return oldNumber;
-    }
-
-    public int giveDependentPid() {
-        int oldNumber = dependentPIDGenerate;
-        dependentPIDGenerate++;
-        return oldNumber;
-    }
-
     /*
      * A method that save if the form information don't exist in the system.
      */
-    public boolean saveData(Form inputForm) {
+    private boolean saveData(Form inputForm) {
         if (inputForm.getDependent() == null || inputForm.getImmigrant() == null) {
             return false;
         }
@@ -237,22 +222,48 @@ public class Database {
                 iForm.setImmigrantPid(dForm.getDependentPid());
                 addImmigrantToData(iForm);
                 addDependentToData(dForm);
+            } else if (status.equalsIgnoreCase("Information need update")) {
+                if ((dForm = getDataDependent(dForm.getDependentPid())) != null
+                        && (iForm = getDataImmigrant(dForm.getImmigrantPid())) != null) {
+                    Dependent tempDform = getDataDependent(dForm.getDependentPid());
+                    if (tempDform.getPrevClaim()) {
+                        return false;
+                    }
+                    updateImmigrant(iForm);
+                    updateDependent(dForm);
+                } else {
+                    return false;
+                }
             } else {
-                updateImmigrant(iForm);
-                updateDependent(dForm);
-            }
-        } else {
-            if (status.equalsIgnoreCase("Immigrant information is not in system")) {
-
-            } else {
-
+                if (status.equalsIgnoreCase("Immigrant is not system")) {
+                    Dependent tempDform = getDataDependent(dForm.getDependentPid());
+                    if (tempDform != null) {
+                        if (tempDform.getPrevClaim()) {
+                            return false;
+                        }
+                        dForm.setPrevClaim(dForm.getPrevClaim());
+                        iForm.setImmigrantPid(dForm.getDependentPid());
+                        addImmigrantToData(iForm);
+                        updateDependent(dForm);
+                    }
+                } else if (status.equalsIgnoreCase("Dependent is not system")) {
+                    if ((iForm = getDataImmigrant(dForm.getImmigrantPid())) != null) {
+                        dForm.setPrevClaim(dForm.getPrevClaim());
+                        iForm.setImmigrantPid(dForm.getDependentPid());
+                        updateImmigrant(iForm);
+                        addDependentToData(dForm);
+                    }
+                } else {
+                    return false;
+                }
             }
         }
         return true;
     }
 
     /*
-     * A private method that for information from the
+     * A private method that really add the immigrant
+     * information in to the system.
      */
     public boolean addImmigrantToData(Immigrant immigrantForm) {
 
@@ -267,6 +278,10 @@ public class Database {
         return true;
     }
 
+    /*
+     * A private method that really add the dependnet
+     * information in to the system aplication record (SAR).
+     */
     private boolean addDependentToData(Dependent dependentForm) {
         String dataStringDependent = setDependenttoRecord(dependentForm);
         try {
@@ -279,6 +294,10 @@ public class Database {
         return true;
     }
 
+    /*
+     * A method for remove the immigrant information for the
+     * the system application record (SAR).
+     */
     public boolean removeImmigrant(int pid) {
         ArrayList<Immigrant> temp = new ArrayList<Immigrant>();
         boolean result = false;
@@ -295,6 +314,10 @@ public class Database {
         return result;
     }
 
+    /*
+     * A method for remove the dependent information for the
+     * the system application record (SAR).
+     */
     public boolean removeDependent(int pid) {
         ArrayList<Dependent> temp = new ArrayList<Dependent>();
         boolean result = false;
@@ -311,6 +334,10 @@ public class Database {
         return result;
     }
 
+    /*
+     * A method for update the immigrant information in
+     * the system application record (SAR).
+     */
     public boolean updateImmigrant(Immigrant immigrant) {
         if (immigrant == null || databaseFormsImmigrant == null) {
             return false;
@@ -332,6 +359,10 @@ public class Database {
         return result;
     }
 
+    /*
+     * A method for update the dependent information in
+     * the system application record (SAR).
+     */
     public boolean updateDependent(Dependent dependent) {
         if (dependent == null || databaseFormsDependent == null) {
             return false;
@@ -353,7 +384,11 @@ public class Database {
         return result;
     }
 
-    public void updateLine(String lineChange, String DatabaseFile, int changeline, char command) {
+    /*
+     * A method for remove or update immigrant information to
+     * the system application record (SAR).
+     */
+    private void updateLine(String lineChange, String DatabaseFile, int changeline, char command) {
         String tempFileString = "./src/main/java/org/openjfx/Database/temp.txt";
         File oldFile = new File(DatabaseFile);
         File newFile = new File(tempFileString);
@@ -397,7 +432,7 @@ public class Database {
         }
     }
 
-    public String setImmigranttoRecord(Immigrant immigrant) {
+    private String setImmigranttoRecord(Immigrant immigrant) {
         String myString = Helper.nullStringNullString(immigrant.getFirstName()) + "/";
         myString += Helper.nullStringNullString(immigrant.getMiddleName()) + "/";
         myString += Helper.nullStringNullString(immigrant.getLastName()) + "/";
@@ -419,7 +454,7 @@ public class Database {
         return myString;
     }
 
-    public String setDependenttoRecord(Dependent dependent) {
+    private String setDependenttoRecord(Dependent dependent) {
         String myString = Helper.nullStringNullString(dependent.getFirstName()) + "/";
         myString += Helper.nullStringNullString(dependent.getMiddleName()) + "/";
         myString += Helper.nullStringNullString(dependent.getLastName()) + "/";
@@ -441,7 +476,7 @@ public class Database {
         return myString;
     }
 
-    public Immigrant setRecordtoImmigrant(String record) {
+    private Immigrant setRecordtoImmigrant(String record) {
         Immigrant myImmigrant = new Immigrant();
         int i = 0;
         String StringArray[] = record.split("/", 0);
@@ -485,7 +520,7 @@ public class Database {
         return myImmigrant;
     }
 
-    public Dependent setRecordtoDependent(String record) {
+    private Dependent setRecordtoDependent(String record) {
         Dependent myDependent = new Dependent();
         int i = 0;
         String StringArray[] = record.split("/", 0);
