@@ -32,7 +32,7 @@ public class Helper {
         }
     }
 
-    public static int monthtoInt(String i) {
+    public static int monthToInt(String i) {
         switch (i) {
             case "January":
                 return 1;
