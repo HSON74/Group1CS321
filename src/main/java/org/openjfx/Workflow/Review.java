@@ -131,7 +131,14 @@ public class Review {
         grid.add(conf, 0, 15);
         Button button = new Button("OK");
         button.setOnAction(e -> revalidate(file, primaryStage));
-        grid.add(button, 0, 17);
+        grid.add(button, 1, 17);
+        Button back = new Button("Back");
+        back.setOnAction(e -> {
+            reviewWorkflow.returnForm(file);
+            reviewWorkflow.getDataEntry().dataEntryScene(file, reviewWorkflow, primaryStage);
+            primaryStage.setScene(reviewWorkflow.getDataEntry().dataEntryScene);
+        });
+        grid.add(back, 0, 17);
         Scene scene = new Scene(grid, 960,540);
         scene.getRoot().setStyle("-fx-font-family: 'serif'");
         setScene(scene);
