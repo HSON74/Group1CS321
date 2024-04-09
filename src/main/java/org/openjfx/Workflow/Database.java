@@ -1,5 +1,6 @@
 package org.openjfx.Workflow;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -402,7 +403,7 @@ public class Database {
             FileReader fr = new FileReader(DatabaseFile);
             BufferedReader br = new BufferedReader(fr);
 
-            while ((currentLine = br.readLine()) != null) {
+            while ((currentLine = BoundedLineReader.readLine(br, 5_000_000)) != null) {
                 line++;
                 if (changeline != line) {
                     pw.println(currentLine);
