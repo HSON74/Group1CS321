@@ -57,7 +57,7 @@ public class DataEntry {
             TextField textField= new TextField ();
             textField.setPromptText(prompt+label_names[i] + " ex: " + format[i]);
             //textField.setMaxWidth(300);
-            fields.add(textField);
+            
            //3 items per row
             if (i%3 ==0){
                 col++;
@@ -65,7 +65,8 @@ public class DataEntry {
             }
             layout.add(label, row++, col);
             layout.add(textField, row++, col);
-            if ((j ==1) && ((i== label_names.length -1))){
+            fields.add(textField);
+            if ((j ==1) && ((i== label_names.length-1))){
                 Label label2 = new Label(person + "Previously Claimed: ");
                 TextField textField2= new TextField ();
                 textField2.setPromptText("Previously Claimed: " + " ex: " + "True");
@@ -105,27 +106,29 @@ public class DataEntry {
                     case 13: systemForm.getImmigrant().setPhoneNumber(fields.get(i).getText()); break;
                     case 14: systemForm.getImmigrant().setFather(fields.get(i).getText()); break;
                     case 15: systemForm.getImmigrant().setMother(fields.get(i).getText()); break;
-                    case 16: systemForm.getImmigrant().setemploymentStatus(Boolean.parseBoolean(fields.get(i).getText())); break;
+                    case 16: systemForm.getImmigrant().setAddress(fields.get(i).getText());
+                    case 17: systemForm.getImmigrant().setemploymentStatus(Boolean.parseBoolean(fields.get(i).getText())); break;
                     
                    // Dependent info 
-                    case 17: systemForm.getDependent().setFirstName(fields.get(i).getText()); break;
-                    case 18: systemForm.getDependent().setMiddleName(fields.get(i).getText()); break;
-                    case 19: systemForm.getDependent().setLastName(fields.get(i).getText()); break;
-                    case 20: systemForm.getDependent().setAge(Integer.parseInt(fields.get(i).getText()));break;
-                    case 21: systemForm.getDependent().setBirthMonth(Integer.parseInt(fields.get(i).getText())); break;
-                    case 22: systemForm.getDependent().setBirthDay(Integer.parseInt(fields.get(i).getText())); break;
-                    case 23: systemForm.getDependent().setBirthYear(Integer.parseInt(fields.get(i).getText())); break;
-                    case 24: systemForm.getDependent().setSSNumber(Integer.parseInt(fields.get(i).getText())); break;
-                    case 25: systemForm.getDependent().setImmigrantPid(Integer.parseInt(fields.get(i).getText())); break;
-                    case 26: systemForm.getDependent().setDependentPid(Integer.parseInt(fields.get(i).getText())); break;
-                    case 27: systemForm.getDependent().setRace(fields.get(i).getText()); break;
-                    case 28: systemForm.getDependent().setGender(fields.get(i).getText()); break;
-                    case 29: systemForm.getDependent().setMarried(Boolean.parseBoolean(fields.get(i).getText())); break;
-                    case 30: systemForm.getDependent().setPhoneNumber(fields.get(i).getText()); break;
-                    case 31: systemForm.getDependent().setFather(fields.get(i).getText()); break;
-                    case 32: systemForm.getDependent().setMother(fields.get(i).getText()); break;
-                    case 33: systemForm.getDependent().setemploymentStatus(Boolean.parseBoolean(fields.get(i).getText())); break;
-                    case 34: systemForm.getDependent().setPrevClaim(Boolean.parseBoolean(fields.get(i).getText())); break;
+                    case 18: systemForm.getDependent().setFirstName(fields.get(i).getText()); break;
+                    case 19: systemForm.getDependent().setMiddleName(fields.get(i).getText()); break;
+                    case 20: systemForm.getDependent().setLastName(fields.get(i).getText()); break;
+                    case 21: systemForm.getDependent().setAge(Integer.parseInt(fields.get(i).getText()));break;
+                    case 22: systemForm.getDependent().setBirthMonth(Integer.parseInt(fields.get(i).getText())); break;
+                    case 23: systemForm.getDependent().setBirthDay(Integer.parseInt(fields.get(i).getText())); break;
+                    case 24: systemForm.getDependent().setBirthYear(Integer.parseInt(fields.get(i).getText())); break;
+                    case 25: systemForm.getDependent().setSSNumber(Integer.parseInt(fields.get(i).getText())); break;
+                    case 26: systemForm.getDependent().setImmigrantPid(Integer.parseInt(fields.get(i).getText())); break;
+                    case 27: systemForm.getDependent().setDependentPid(Integer.parseInt(fields.get(i).getText())); break;
+                    case 28: systemForm.getDependent().setRace(fields.get(i).getText()); break;
+                    case 29: systemForm.getDependent().setGender(fields.get(i).getText()); break;
+                    case 30: systemForm.getDependent().setMarried(Boolean.parseBoolean(fields.get(i).getText())); break;
+                    case 31: systemForm.getDependent().setPhoneNumber(fields.get(i).getText()); break;
+                    case 32: systemForm.getDependent().setFather(fields.get(i).getText()); break;
+                    case 33: systemForm.getDependent().setMother(fields.get(i).getText()); break;
+                    case 34: systemForm.getDependent().setAddress(fields.get(i).getText()); break;
+                    case 35: systemForm.getDependent().setemploymentStatus(Boolean.parseBoolean(fields.get(i).getText())); break;
+                    case 36: systemForm.getDependent().setPrevClaim(Boolean.parseBoolean(fields.get(i).getText())); break;
                     
                 }}
             DataEntryWorkflow.getReview().rDisplay(systemForm, DataEntryWorkflow, primaryStage);
