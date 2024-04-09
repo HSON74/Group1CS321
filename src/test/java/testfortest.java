@@ -7,7 +7,7 @@ public class testfortest {
     @Test
     void TestNewWFCout() {
         Workflow wfobj = new Workflow();
-        int totalwf = wfobj.countWFItems("null");
+        int totalwf = wfobj.countWFItems();
         assertEquals(totalwf, 0);
         System.out.println("Hellow test");
     }

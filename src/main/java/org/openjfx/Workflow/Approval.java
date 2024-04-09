@@ -22,11 +22,11 @@ public class Approval {
     }
 
     private Form approvalForm; // The store instance of the form pass in to the application
-    private Database database;
-    private ApprovalStatus approvalStatus;
-    private Workflow approvalWorkflow;
+    private Database database; //
+    private ApprovalStatus approvalStatus; //
+    private Workflow approvalWorkflow; // The Approval workflow that is currently run on.
     @SuppressWarnings("unused")
-    private boolean isAdd;
+    private boolean isAdd; //
 
     // Application Scene update
     public Scene approvalScene;
@@ -34,7 +34,7 @@ public class Approval {
     public Scene approvalCompleteScene;
     public Scene rejectScene;
 
-    /* Set the the application when the user sumbit the form for review */
+    /* Set the the application scene when the user sumbit the form for approval */
     public void Adisplay(Form form, Workflow system, Stage primaryStage) {
         if (form == null) {
             System.out.println("Null form");
@@ -46,6 +46,7 @@ public class Approval {
         }
         this.approvalForm = form;
         this.approvalWorkflow = system;
+        //
         Text[] approvalTextsI = { new Text("First Name: "), new Text("Middle Name:"),
                 new Text("Last Name:"),
                 new Text("Age: "), new Text("Birth Month:"), new Text("Birth Day:"), new Text("Birth Year: "),
@@ -162,6 +163,7 @@ public class Approval {
             formD[i++] = "Yes";
             formD[i++] = "6000";
         }
+        // Scene pane setup
         GridPane approvalGridPane = new GridPane();
         approvalGridPane.setAlignment(Pos.CENTER);
         approvalGridPane.setHgap(10);
@@ -201,8 +203,7 @@ public class Approval {
 
         sumbitButton.setOnAction(
                 e -> {
-                    if (!this.isAdd) {
-
+                    if (!this.isAdd && checkFrom(status)) {
                         this.isAdd = connection();
                         Stage minStage = new Stage();
                         minStage.setTitle("Result of Form");
@@ -214,8 +215,7 @@ public class Approval {
                         approvalCompleteScene = new Scene(tempGridPane, 250, 250);
                         minStage.setScene(approvalCompleteScene);
                         minStage.showAndWait();
-                    }
-                    if (isAdd) {
+                    } else if (isAdd) {
                         Stage minStage = new Stage();
                         minStage.setTitle("Result of Form");
                         GridPane tempGridPane = new GridPane();
@@ -225,8 +225,15 @@ public class Approval {
                     }
                 });
         rejectButton.setOnAction(e -> {
-            approvalWorkflow.getReview().rDisplay(this.getForm(), this.getWorkflow(), primaryStage);
-            primaryStage.setScene(approvalWorkflow.getReview().rScene);
+            if (isAdd) {
+                setDatabase(null, form);
+                database.removeDependent(form.getImmigrant().getImmigrantPid());
+                database.removeDependent(form.getDependent().getDependentPid());
+                isAdd = false;
+            } else {
+                approvalWorkflow.getReview().rDisplay(this.getForm(), this.getWorkflow(), primaryStage);
+                primaryStage.setScene(approvalWorkflow.getReview().rScene);
+            }
         });
 
         // Scene set to application window
@@ -238,6 +245,7 @@ public class Approval {
 
     }
 
+    // Approval Class construct that will be call in the workflow.
     public Approval(String dataBase, Form form) {
         this.isAdd = false;
         this.approvalForm = form;
@@ -246,6 +254,7 @@ public class Approval {
 
     }
 
+    /* A method for check form is the form is null */
     private boolean checkFrom(String status) {
         if (approvalForm == null) {
             System.err.println("The form is null");

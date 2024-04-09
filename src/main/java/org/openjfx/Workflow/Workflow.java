@@ -2,6 +2,7 @@ package org.openjfx.Workflow;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 
 import org.openjfx.Business.*;
 import org.openjfx.Business.Form;
@@ -22,14 +23,14 @@ public class Workflow {
     protected DataEntry workflowDataEntry;
     protected Database workflowDatabase;
     protected List<Scene> sceneArray;
-    protected List<Integer> wfItems;
+    protected HashMap<Integer, String> wfItems;
 
     // This is the workflow constructor if there's already a form
     public Workflow(Form form) {
         workflowDataEntry = new DataEntry(this);
         workflowReview = new Review();
         workflowApproval = new Approval(null, form);
-        wfItems = new ArrayList<>();
+        wfItems = new HashMap<>();
     }
 
     // This constructor is for when a new form is being created at the start of the
@@ -39,7 +40,7 @@ public class Workflow {
         workflowDataEntry.startProcess();
         workflowReview = new Review();
         workflowApproval = new Approval(null, workflowDataEntry.systemForm);
-        wfItems = new ArrayList<>();
+        wfItems = new HashMap<>();
     }
 
     public void initSceneArray(Scene titleScene) {
@@ -61,26 +62,23 @@ public class Workflow {
 
     // This method is for when a new workflow item is being added
     public Boolean addWFItem(String step, Integer onjid) {
-        if (!step.equals(getStep())) {
-            wfItems.add(onjid);
+        if (wfItems.get(onjid) != null) {
+            return false;
+        } 
+        else {
+            wfItems.put(onjid, step);
             setStep(step);
             setObjid(onjid);
-        } else {
-            return false;
+            return true;
         }
-        return true;
     }
 
-    public Integer getNextWFItem(String step) {
-        return Integer.parseInt(step);
+    public String getNextWFItem(Integer onjid) {
+        return wfItems.get(onjid);
     }
 
-    public Integer countWFItems(String step) {
-        int count = 0;
-        for (int i = 0; i < wfItems.size(); i++) {
-            count++;
-        }
-        return count;
+    public Integer countWFItems() {
+        return wfItems.size();
     }
 
     public Form returnForm(Form form) {
@@ -88,8 +86,7 @@ public class Workflow {
     }
 
     public boolean submit(Form form) {
-        //return workflowDatabase.addData(form);
-        return true;
+        return workflowDatabase.addData(form);
     }
 
 

@@ -173,6 +173,96 @@ public class Database {
     }
 
     /*
+     * A method for remove the immigrant information for the
+     * the system application record (SAR).
+     */
+    public boolean removeImmigrant(int pid) {
+        ArrayList<Immigrant> temp = new ArrayList<Immigrant>();
+        boolean result = false;
+        for (int j = 0; j < databaseFormsImmigrant.size(); j++) {
+            if (databaseFormsImmigrant.get(j).getImmigrantPid() == pid) {
+                updateLine("", dataNameForImmigrant, j + 1, 'd');
+                result = true;
+            } else {
+                temp.add(databaseFormsImmigrant.get(j));
+            }
+        }
+        databaseFormsImmigrant.clear();
+        databaseFormsImmigrant = temp;
+        return result;
+    }
+
+    /*
+     * A method for remove the dependent information for the
+     * the system application record (SAR).
+     */
+    public boolean removeDependent(int pid) {
+        ArrayList<Dependent> temp = new ArrayList<Dependent>();
+        boolean result = false;
+        for (int j = 0; j < databaseFormsDependent.size(); j++) {
+            if (databaseFormsDependent.get(j).getDependentPid() == pid) {
+                updateLine("", dataNameForDependent, j + 1, 'd');
+                result = true;
+            } else {
+                temp.add(databaseFormsDependent.get(j));
+            }
+        }
+        databaseFormsDependent.clear();
+        databaseFormsDependent = temp;
+        return result;
+    }
+
+    /*
+     * A method for update the immigrant information in
+     * the system application record (SAR).
+     */
+    public boolean updateImmigrant(Immigrant immigrant) {
+        if (immigrant == null || databaseFormsImmigrant == null) {
+            return false;
+        }
+        ArrayList<Immigrant> temp = new ArrayList<Immigrant>();
+        boolean result = false;
+        for (int j = 0; j < databaseFormsImmigrant.size(); j++) {
+            if (databaseFormsImmigrant.get(j).getImmigrantPid() == immigrant.getImmigrantPid()
+                    || immigrant.getSSNumber() == databaseFormsImmigrant.get(j).getSSNumber()) {
+                String newLine = setImmigranttoRecord(immigrant);
+                updateLine(newLine, dataNameForImmigrant, j + 1, 'u');
+                temp.add(immigrant);
+            } else {
+                temp.add(databaseFormsImmigrant.get(j));
+            }
+        }
+        databaseFormsImmigrant.clear();
+        databaseFormsImmigrant = temp;
+        return result;
+    }
+
+    /*
+     * A method for update the dependent information in
+     * the system application record (SAR).
+     */
+    public boolean updateDependent(Dependent dependent) {
+        if (dependent == null || databaseFormsDependent == null) {
+            return false;
+        }
+        ArrayList<Dependent> temp = new ArrayList<Dependent>();
+        boolean result = false;
+        for (int j = 0; j < databaseFormsDependent.size(); j++) {
+            if (databaseFormsDependent.get(j).getDependent().getDependentPid() == dependent.getDependentPid()
+                    || dependent.getSSNumber() == databaseFormsDependent.get(j).getSSNumber()) {
+                String newLine = setImmigranttoRecord(dependent);
+                updateLine(newLine, dataNameForDependent, j + 1, 'u');
+                temp.add(dependent);
+            } else {
+                temp.add(databaseFormsDependent.get(j));
+            }
+        }
+        databaseFormsDependent.clear();
+        databaseFormsDependent = temp;
+        return result;
+    }
+
+    /*
      * The method will search the the Database froms for
      * immigrant using the integer variable social security number, which
      * is immigrant social security number.
@@ -265,7 +355,7 @@ public class Database {
      * A private method that really add the immigrant
      * information in to the system.
      */
-    public boolean addImmigrantToData(Immigrant immigrantForm) {
+    private boolean addImmigrantToData(Immigrant immigrantForm) {
 
         String dataStringImmigrant = setImmigranttoRecord(immigrantForm);
         try {
@@ -292,96 +382,6 @@ public class Database {
             return false;
         }
         return true;
-    }
-
-    /*
-     * A method for remove the immigrant information for the
-     * the system application record (SAR).
-     */
-    public boolean removeImmigrant(int pid) {
-        ArrayList<Immigrant> temp = new ArrayList<Immigrant>();
-        boolean result = false;
-        for (int j = 0; j < databaseFormsImmigrant.size(); j++) {
-            if (databaseFormsImmigrant.get(j).getImmigrantPid() == pid) {
-                updateLine("", dataNameForImmigrant, j + 1, 'd');
-                result = true;
-            } else {
-                temp.add(databaseFormsImmigrant.get(j));
-            }
-        }
-        databaseFormsImmigrant.clear();
-        databaseFormsImmigrant = temp;
-        return result;
-    }
-
-    /*
-     * A method for remove the dependent information for the
-     * the system application record (SAR).
-     */
-    public boolean removeDependent(int pid) {
-        ArrayList<Dependent> temp = new ArrayList<Dependent>();
-        boolean result = false;
-        for (int j = 0; j < databaseFormsDependent.size(); j++) {
-            if (databaseFormsDependent.get(j).getDependentPid() == pid) {
-                updateLine("", dataNameForDependent, j + 1, 'd');
-                result = true;
-            } else {
-                temp.add(databaseFormsDependent.get(j));
-            }
-        }
-        databaseFormsDependent.clear();
-        databaseFormsDependent = temp;
-        return result;
-    }
-
-    /*
-     * A method for update the immigrant information in
-     * the system application record (SAR).
-     */
-    public boolean updateImmigrant(Immigrant immigrant) {
-        if (immigrant == null || databaseFormsImmigrant == null) {
-            return false;
-        }
-        ArrayList<Immigrant> temp = new ArrayList<Immigrant>();
-        boolean result = false;
-        for (int j = 0; j < databaseFormsImmigrant.size(); j++) {
-            if (databaseFormsImmigrant.get(j).getImmigrantPid() == immigrant.getImmigrantPid()
-                    || immigrant.getSSNumber() == databaseFormsImmigrant.get(j).getSSNumber()) {
-                String newLine = setImmigranttoRecord(immigrant);
-                updateLine(newLine, dataNameForImmigrant, j + 1, 'u');
-                temp.add(immigrant);
-            } else {
-                temp.add(databaseFormsImmigrant.get(j));
-            }
-        }
-        databaseFormsImmigrant.clear();
-        databaseFormsImmigrant = temp;
-        return result;
-    }
-
-    /*
-     * A method for update the dependent information in
-     * the system application record (SAR).
-     */
-    public boolean updateDependent(Dependent dependent) {
-        if (dependent == null || databaseFormsDependent == null) {
-            return false;
-        }
-        ArrayList<Dependent> temp = new ArrayList<Dependent>();
-        boolean result = false;
-        for (int j = 0; j < databaseFormsDependent.size(); j++) {
-            if (databaseFormsDependent.get(j).getDependent().getDependentPid() == dependent.getDependentPid()
-                    || dependent.getSSNumber() == databaseFormsDependent.get(j).getSSNumber()) {
-                String newLine = setImmigranttoRecord(dependent);
-                updateLine(newLine, dataNameForDependent, j + 1, 'u');
-                temp.add(dependent);
-            } else {
-                temp.add(databaseFormsDependent.get(j));
-            }
-        }
-        databaseFormsDependent.clear();
-        databaseFormsDependent = temp;
-        return result;
     }
 
     /*
@@ -432,6 +432,7 @@ public class Database {
         }
     }
 
+    /* */
     private String setImmigranttoRecord(Immigrant immigrant) {
         String myString = Helper.nullStringNullString(immigrant.getFirstName()) + "/";
         myString += Helper.nullStringNullString(immigrant.getMiddleName()) + "/";
