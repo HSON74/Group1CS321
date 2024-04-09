@@ -201,8 +201,7 @@ public class Approval {
 
         sumbitButton.setOnAction(
                 e -> {
-                    if (!this.isAdd) {
-
+                    if (!this.isAdd && checkFrom(status)) {
                         this.isAdd = connection();
                         Stage minStage = new Stage();
                         minStage.setTitle("Result of Form");
@@ -214,8 +213,7 @@ public class Approval {
                         approvalCompleteScene = new Scene(tempGridPane, 250, 250);
                         minStage.setScene(approvalCompleteScene);
                         minStage.showAndWait();
-                    }
-                    if (isAdd) {
+                    } else if (isAdd) {
                         Stage minStage = new Stage();
                         minStage.setTitle("Result of Form");
                         GridPane tempGridPane = new GridPane();
