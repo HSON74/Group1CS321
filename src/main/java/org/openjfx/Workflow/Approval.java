@@ -23,10 +23,10 @@ public class Approval {
 
     private Form approvalForm; // The store instance of the form pass in to the application
     private Database database; //
-    private ApprovalStatus approvalStatus;
-    private Workflow approvalWorkflow;
+    private ApprovalStatus approvalStatus; //
+    private Workflow approvalWorkflow; // The Approval workflow that is currently run on.
     @SuppressWarnings("unused")
-    private boolean isAdd;
+    private boolean isAdd; //
 
     // Application Scene update
     public Scene approvalScene;
@@ -245,6 +245,7 @@ public class Approval {
 
     }
 
+    // Approval Class construct that will be call in the workflow.
     public Approval(String dataBase, Form form) {
         this.isAdd = false;
         this.approvalForm = form;
