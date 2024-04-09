@@ -63,13 +63,14 @@ public class Workflow {
     // This method is for when a new workflow item is being added
     public Boolean addWFItem(String step, Integer onjid) {
         if (wfItems.get(onjid) != null) {
+            return false;
+        } 
+        else {
             wfItems.put(onjid, step);
             setStep(step);
             setObjid(onjid);
-        } else {
-            return false;
+            return true;
         }
-        return true;
     }
 
     public String getNextWFItem(Integer onjid) {
