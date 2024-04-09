@@ -3,9 +3,10 @@ package org.openjfx.Business;
 public class Immigrant extends Person {
     private int ImmigrantPid;
     private int DependentPid; // references the dependent to claim
-
+    private Dependent dependent;
     public Dependent getDependent() {
-        return new Dependent();
+        this.dependent = new Dependent();
+        return dependent;
     }
 
     public void newDependent() {
