@@ -4,6 +4,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import org.openjfx.Business.Form;
+import org.openjfx.Business.FormStatus;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -87,6 +89,7 @@ public class DataEntry {
         //systemForm.setDependent(systemForm.getImmigrant().getDependent());
         
         submit.setOnAction(e -> {
+            systemForm.updateStatus(FormStatus.INPROGRESS);
             for (int i = 0; i<fields.size(); i++){
                 switch (i){
                     /*Immigrant info */
@@ -128,7 +131,8 @@ public class DataEntry {
                     case 33: systemForm.getDependent().setMother(fields.get(i).getText()); break;
                     case 34: systemForm.getDependent().setAddress(fields.get(i).getText()); break;
                     case 35: systemForm.getDependent().setemploymentStatus(Boolean.parseBoolean(fields.get(i).getText())); break;
-                    case 36: systemForm.getDependent().setPrevClaim(Boolean.parseBoolean(fields.get(i).getText())); break;
+                    case 36: systemForm.getDependent().setPrevClaim(Boolean.parseBoolean(fields.get(i).getText())); 
+                    systemForm.updateStatus(FormStatus.COMPLETE);break;
                     
                 }}
             DataEntryWorkflow.getReview().rDisplay(systemForm, DataEntryWorkflow, primaryStage);
