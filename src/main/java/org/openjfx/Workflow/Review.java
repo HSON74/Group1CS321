@@ -11,35 +11,45 @@ import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.geometry.*;
 
+/*
+ * This is the review class of the application.
+ */
 public class Review {
+    // The review scene
     protected Scene rScene;
+    // Workflow reference
     protected Workflow reviewWorkflow;
-    protected Form reviewForm;
 
+    // The review display scene function
     public void rDisplay(Form form, Workflow system, Stage primaryStage) {
-        this.reviewForm = form;
         this.reviewWorkflow = system;
         reviewdata(form, primaryStage);
         rScene.getRoot().setStyle("-fx-font-family: 'serif'");
         primaryStage.setScene(rScene);
     }
 
+    // This function gets called when the user finishes reviewing the forms
     public void revalidate(Form file, Stage primaryStage) {
+        // This checks if the form status is complete or not
         if (file.getFormStatus() != FormStatus.COMPLETE) {
+            // If not, then the application will display an error message based on the status
             Stage window = new Stage();
             window.initModality(Modality.APPLICATION_MODAL);
             window.setTitle("Error Message:");
             Label label = new Label();
+            // If the form is empty
             if (file.getFormStatus() == FormStatus.EMPTY) {
                 label.setText("Error! Form is empty!");
                 window.setMinWidth(250);
                 window.setMinHeight(200);
             }
+            // If the form is incomplete
             else if (file.getFormStatus() == FormStatus.INPROGRESS) {
                 label.setText("Error! Some fields have not been fully filled out!");
                 window.setMinWidth(400);
                 window.setMinHeight(200);
             } 
+            // This button returns the user to the data entry
             Button button = new Button("Return to Data Entry");
             VBox layout = new VBox(10);
             layout.getChildren().addAll(label, button);
@@ -49,6 +59,7 @@ public class Review {
             reviewWorkflow.addScene(scene);
             window.setScene(scene);
             window.show();
+            // The form gets returned to data entry
             button.setOnAction(e->{
                 reviewWorkflow.returnForm(file);
                 reviewWorkflow.getDataEntry().dataEntryScene(file, reviewWorkflow, primaryStage);
@@ -56,16 +67,18 @@ public class Review {
                 window.close();
             });
         } else {
-            reviewWorkflow.submit(file);
+            // If the form is complete, then the form gets sent to the approval stage
             reviewWorkflow.getApproval().Adisplay(file, reviewWorkflow, primaryStage);
             primaryStage.setScene(reviewWorkflow.getApproval().approvalScene);
         }
     }
 
+    // This function reviews the form data
     public void reviewdata(Form file, Stage primaryStage) {
-        file.updateStatus(FormStatus.COMPLETE);
+        // The immigrant and dependent orms are reviewed individually
         Immigrant immigrant = file.getImmigrant();
         Dependent dependent = file.getDependent();
+        // This part is just setting up the display of the review screen
         GridPane grid = new GridPane();
         Text title = new Text("Form Review");
         title.setFont(Font.font("seirf", FontWeight.BOLD, FontPosture.REGULAR, 30));
@@ -129,9 +142,11 @@ public class Review {
             grid.add(dependentTexts[i],1,i+2);
         }
         grid.add(conf, 0, 15);
+        // This button is for when the user finishes reviewing the form and wants to submit for revalidation
         Button button = new Button("OK");
         button.setOnAction(e -> revalidate(file, primaryStage));
         grid.add(button, 1, 17);
+        // This button is for when the user wishes to go back to the data entry screen to edit the form data
         Button back = new Button("Back");
         back.setOnAction(e -> {
             reviewWorkflow.returnForm(file);

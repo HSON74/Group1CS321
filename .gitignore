@@ -40,8 +40,8 @@ buildNumber.properties
 .project
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
-*.class
-*.lst
 
 #The .vs
 .vscode
+*.lst
+*.class
