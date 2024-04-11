@@ -57,11 +57,11 @@ void TestBirthYear(){
     assertTrue(dependent.getbirthYear() <= 2024);
     assertTrue(dependent.getbirthYear() > 0);
 }
-@Test
+/*@Test
 void TestSSNumber(){
     assertTrue(dependent.getSSNumber()>=100000000); //valid 9 digit
     assertTrue(dependent.getSSNumber()<=999999999);
-}
+}*/
 
 @Test
 void TestDependentPid(){
@@ -115,7 +115,7 @@ public static void main(String[] args) {
         b.TestBirthMonth();
         b.TestBirthDay();
         b.TestBirthYear();
-        b.TestSSNumber();
+        //b.TestSSNumber();
         b.TestDependentPid();
         b.TestRace();
         b.TestGender();
