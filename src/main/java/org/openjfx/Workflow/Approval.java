@@ -205,16 +205,18 @@ public class Approval {
                 e -> {
                     if (!this.isAdd && checkFrom(status)) {
                         this.isAdd = connection();
-                        Stage minStage = new Stage();
-                        minStage.setTitle("Result of Form");
-                        GridPane tempGridPane = new GridPane();
-                        TextArea myTextArea = new TextArea("Contragulation, you complete the form");
-                        myTextArea.setWrapText(true);
-                        tempGridPane.add(myTextArea, 1, 1);
-                        approvalGridPane.setScaleShape(false);
-                        approvalCompleteScene = new Scene(tempGridPane, 250, 250);
-                        minStage.setScene(approvalCompleteScene);
-                        minStage.showAndWait();
+                        if (isAdd) {
+                            Stage minStage = new Stage();
+                            minStage.setTitle("Result of Form");
+                            GridPane tempGridPane = new GridPane();
+                            Text myText = new Text(
+                                    "Contragulation, you complete the form.\n" + "Please close the form\n");
+                            tempGridPane.add(myText, 1, 1);
+                            approvalGridPane.setScaleShape(false);
+                            approvalCompleteScene = new Scene(tempGridPane, 250, 250);
+                            minStage.setScene(approvalCompleteScene);
+                            minStage.showAndWait();
+                        }
                     } else if (isAdd) {
                         Stage minStage = new Stage();
                         minStage.setTitle("Result of Form");
@@ -310,108 +312,110 @@ public class Approval {
             missing = "Form is don't have Immigrant and Dependent information.";
             return false;
         }
-        if (approvalForm.getImmigrant() != null) {
+        String missingImmigrant = "";
+        if (approvalForm.getDependent() != null) {
             if (approvalForm.getImmigrant().getFirstName() == null) {
-                if (missing.equalsIgnoreCase("")) {
-                    missing = "Immigrant Field: First Name";
+                if (missingImmigrant.equalsIgnoreCase("")) {
+                    missingImmigrant = "Immigrant Field: First Name";
                 } else {
-                    missing = "Immigrant Field: First Name";
+                    missingImmigrant = "Immigrant Field: First Name";
                 }
             } else if (approvalForm.getImmigrant().getLastName() == null) {
-                if (missing.equalsIgnoreCase("")) {
-                    missing = "Immigrant Field: Last Name";
+                if (missingImmigrant.equalsIgnoreCase("")) {
+                    missingImmigrant = "Immigrant Field: Last Name";
                 } else {
-                    missing = ", Last Name";
+                    missingImmigrant = ", Last Name";
                 }
             } else if (approvalForm.getImmigrant().getAge() <= 0) {
-                if (missing.equalsIgnoreCase("")) {
-                    missing = "Immigrant Field: Age";
+                if (missingImmigrant.equalsIgnoreCase("")) {
+                    missingImmigrant = "Immigrant Field: Age";
                 } else {
-                    missing = ", Age";
+                    missingImmigrant = ", Age";
                 }
             } else if (approvalForm.getImmigrant().getAddress() == null) {
-                if (missing.equalsIgnoreCase("")) {
-                    missing = "Immigrant Field: Address";
+                if (missingImmigrant.equalsIgnoreCase("")) {
+                    missingImmigrant = "Immigrant Field: Address";
                 } else {
-                    missing = ", Address";
+                    missingImmigrant = ", Address";
                 }
             } else if (approvalForm.getImmigrant().getSSNumber() < 0) {
-                if (missing.equalsIgnoreCase("")) {
-                    missing = "Immigrant Field: Social Security Number";
+                if (missingImmigrant.equalsIgnoreCase("")) {
+                    missingImmigrant = "Immigrant Field: Social Security Number";
                 } else {
-                    missing = ", Social Security Number";
+                    missingImmigrant = ", Social Security Number";
                 }
             } else if (approvalForm.getImmigrant().getRace() == null) {
-                if (missing.equalsIgnoreCase("")) {
-                    missing = "Immigrant Field: Race";
+                if (missingImmigrant.equalsIgnoreCase("")) {
+                    missingImmigrant = "Immigrant Field: Race";
                 } else {
-                    missing = ", Race";
+                    missingImmigrant = ", Race";
                 }
             } else if (approvalForm.getImmigrant().getGender() == null) {
-                if (missing.equalsIgnoreCase("")) {
-                    missing = "Immigrant Field: Gender";
+                if (missingImmigrant.equalsIgnoreCase("")) {
+                    missingImmigrant = "Immigrant Field: Gender";
                 } else {
-                    missing = ", Gender";
+                    missingImmigrant = ", Gender";
                 }
             } else if (approvalForm.getImmigrant().getPhoneNumber() == null) {
-                if (missing.equalsIgnoreCase("")) {
-                    missing = "Immigrant Field: Phone Number";
+                if (missingImmigrant.equalsIgnoreCase("")) {
+                    missingImmigrant = "Immigrant Field: Phone Number";
                 } else {
-                    missing = ", Phone Number";
+                    missingImmigrant = ", Phone Number";
                 }
             } else if (approvalForm.getImmigrant().getImmigrantPid() <= 0) {
-                if (missing.equalsIgnoreCase("")) {
-                    missing = "Immigrant Field: Immigrant PID";
+                if (missingImmigrant.equalsIgnoreCase("")) {
+                    missingImmigrant = "Immigrant Field: Immigrant PID";
                 } else {
-                    missing = ", Immigrant PID";
+                    missingImmigrant = ", Immigrant PID";
                 }
             } else if (approvalForm.getImmigrant().getDependentPid() <= 0) {
-                if (missing.equalsIgnoreCase("")) {
-                    missing = "Immigrant Field: Dependent PID";
+                if (missingImmigrant.equalsIgnoreCase("")) {
+                    missingImmigrant = "Immigrant Field: Dependent PID";
                 } else {
-                    missing = ", Dependent PID";
+                    missingImmigrant = ", Dependent PID";
                 }
             }
         }
+        String missingDependent = "";
         if (approvalForm.getDependent() != null) {
-            if (!missing.equalsIgnoreCase("")) {
-                missing = "; and ";
+            if (!missingImmigrant.equalsIgnoreCase("")) {
+                missingDependent = "; and ";
             }
             if (approvalForm.getDependent().getFirstName() == null) {
-                if (missing.equalsIgnoreCase("")) {
-                    missing = "Dependent Field: First Name";
+                if (missingDependent.equalsIgnoreCase("")) {
+                    missingDependent = "Dependent Field: First Name";
                 } else {
-                    missing = "Dependent Field: First Name";
+                    missingDependent = "Dependent Field: First Name";
                 }
             } else if (approvalForm.getDependent().getLastName() == null) {
-                if (missing.equalsIgnoreCase("")) {
-                    missing = "Dependent Field: Last Name";
+                if (missingDependent.equalsIgnoreCase("")) {
+                    missingDependent = "Dependent Field: Last Name";
                 } else {
-                    missing = ", Last Name";
+                    missingDependent = ", Last Name";
                 }
             } else if (approvalForm.getDependent().getAge() <= 0) {
-                if (missing.equalsIgnoreCase("")) {
-                    missing = "Dependent Field: Age";
+                if (missingDependent.equalsIgnoreCase("")) {
+                    missingDependent = "Dependent Field: Age";
                 } else {
-                    missing = ", Age";
+                    missingDependent = ", Age";
                 }
             } else if (approvalForm.getDependent().getAddress() == null) {
                 if (missing.equalsIgnoreCase("")) {
-                    missing = "Dependent Field: Address";
+                    missingDependent = "Dependent Field: Address";
                 } else {
-                    missing = ", Address";
+                    missingDependent = ", Address";
                 }
             } else if (approvalForm.getDependent().getSSNumber() < 0) {
-                if (missing.equalsIgnoreCase("")) {
-                    missing = "Dependent Field: Social Security Number";
+                if (missingDependent.equalsIgnoreCase("")) {
+                    missingDependent = "Dependent Field: Social Security Number";
                 } else {
-                    missing = ", Social Security Number";
+                    missingDependent = ", Social Security Number";
                 }
             } else if (approvalForm.getDependent().getRace() == null) {
-                if (missing.equalsIgnoreCase("")) {
-                    missing = "Dependent Field: Race";
+                if (missingDependent.equalsIgnoreCase("")) {
+                    missingDependent = "Dependent Field: Race";
                 } else {
-                    missing = ", Race";
+                    missingDependent = ", Race";
                 }
             } else if (approvalForm.getDependent().getGender() == null) {
                 if (missing.equalsIgnoreCase("")) {
@@ -420,20 +424,21 @@ public class Approval {
                     missing = ", Gender";
                 }
             } else if (approvalForm.getDependent().getPhoneNumber() == null) {
-                if (missing.equalsIgnoreCase("")) {
-                    missing = "Dependent Field: Phone Number";
+                if (missingDependent.equalsIgnoreCase("")) {
+                    missingDependent = "Dependent Field: Phone Number";
                 } else {
-                    missing = ", Phone Number";
+                    missingDependent = ", Phone Number";
                 }
             } else if (approvalForm.getDependent().getDependentPid() <= 0) {
-                if (missing.equalsIgnoreCase("")) {
-                    missing = "Dependent Field: Dependent PID";
+                if (missingDependent.equalsIgnoreCase("")) {
+                    missingDependent = "Dependent Field: Dependent PID";
                 } else {
-                    missing = ", Dependent PID";
+                    missingDependent = ", Dependent PID";
                 }
             }
         }
-        return missing.equalsIgnoreCase("");
+        missing = missingImmigrant + missingDependent;
+        return (missingImmigrant.equalsIgnoreCase("") || missingDependent.equalsIgnoreCase(""));
     }
 
     /* Setter and Getter for Approval Class */
