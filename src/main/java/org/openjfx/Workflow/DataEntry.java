@@ -146,9 +146,10 @@ public class DataEntry {
                     
             //     }}
         systemForm.updateStatus(FormStatus.COMPLETE);
-        DataEntryWorkflow.getReview().revalidate(systemForm, primaryStage);//hand the form off to the review stage
+        //DataEntryWorkflow.getReview().revalidate(systemForm, primaryStage);//hand the form off to the review stage
         primaryStage.setScene(DataEntryWorkflow.getReview().rScene);
-            
+        DataEntryWorkflow.getReview().revalidate(systemForm, primaryStage);
+        DataEntryWorkflow.getReview().rDisplay(systemForm, DataEntryWorkflow, primaryStage);//(systemForm, primaryStage);
         });
 
         
