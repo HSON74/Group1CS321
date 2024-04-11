@@ -94,7 +94,6 @@ public class Workflow {
         Form newForm = new Form();
         Immigrant newImmigrant = new Immigrant();
         Dependent newDependent = new Dependent();
-        //workflowDataEntry
         newForm.setImmigrant(newImmigrant);
         newForm.setDependent(newDependent);
         return newForm;
