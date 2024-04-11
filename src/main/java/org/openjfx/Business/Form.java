@@ -1,10 +1,14 @@
 package org.openjfx.Business;
+import java.util.ArrayList;
+
+import javafx.scene.control.TextField;
 
 public class Form {
     private Immigrant immigrantForm;
     private Dependent dependentForm;
     private String lastEdit;
     private FormStatus formStatus;
+    private ArrayList<TextField> fields;
 
     public Form() {
         formStatus = FormStatus.EMPTY;
@@ -17,7 +21,10 @@ public class Form {
     public void updateStatus(FormStatus status) {
         this.formStatus = status;
     }
-
+    public ArrayList<TextField> getFields(){
+        this.fields = new ArrayList<>();
+        return this.fields;
+    }
     /*
      * Setter and Getter for the Form Class
      */
