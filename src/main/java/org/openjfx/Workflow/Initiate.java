@@ -11,7 +11,8 @@ public class Initiate {
     }
 
     public Form convertToForm() {
-        return system.generateForm();
+        return new Form();
+        //return system.generateForm();
     }
 
     public boolean registerPerson(Form form) {

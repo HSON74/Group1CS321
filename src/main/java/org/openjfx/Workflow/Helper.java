@@ -1,6 +1,13 @@
 package org.openjfx.Workflow;
 
 public class Helper {
+    public static int checkAge(int i) {
+        if ((i > 0)&&(i <= 100)) {
+            return i;
+        }
+        else return 0;
+    }
+
     public static String intToMonth(int i) {
         switch (i) {
             case 1:
@@ -198,5 +205,10 @@ public class Helper {
         } else {
             return myString;
         }
+    }
+
+    public static int ssNumberCheck(int i) {
+        if ((i >= 100000000)&&(i < 1000000000)) return 0;
+        else return i;
     }
 }

@@ -1,5 +1,7 @@
 package org.openjfx.Workflow;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.openjfx.Business.Immigrant;
 import org.openjfx.Business.Dependent;
 import org.openjfx.Business.Form;
@@ -29,28 +31,30 @@ public class Review {
     }
 
     // This function gets called when the user finishes reviewing the forms
-    public void revalidate(Form file, Stage primaryStage) {
+    public void revalidate(List<TextField> fields, Workflow system, Stage primaryStage) {
+        this.reviewWorkflow = system;
+        Form newForm = reviewWorkflow.generateForm(fields);
         // This checks if the form status is complete or not
-        if (file.getFormStatus() != FormStatus.COMPLETE) {
+        if (newForm.getFormStatus() != FormStatus.COMPLETE) {
             // If not, then the application will display an error message based on the status
             Stage window = new Stage();
             window.initModality(Modality.APPLICATION_MODAL);
             window.setTitle("Error Message:");
             Label label = new Label();
             // If the form is empty
-            if (file.getFormStatus() == FormStatus.EMPTY) {
+            if (newForm.getFormStatus() == FormStatus.EMPTY) {
                 label.setText("Error! Form is empty!");
                 window.setMinWidth(250);
                 window.setMinHeight(200);
             }
             // If the form is incomplete
-            else if (file.getFormStatus() == FormStatus.INPROGRESS) {
+            else if (newForm.getFormStatus() == FormStatus.INPROGRESS) {
                 label.setText("Error! Some fields have not been fully filled out!");
                 window.setMinWidth(400);
                 window.setMinHeight(200);
             } 
             // This button returns the user to the data entry
-            Button button = new Button("Return to Data Entry");
+            Button button = new Button("Ok");
             VBox layout = new VBox(10);
             layout.getChildren().addAll(label, button);
             layout.setAlignment(Pos.CENTER);
@@ -60,16 +64,9 @@ public class Review {
             window.setScene(scene);
             window.show();
             // The form gets returned to data entry
-            button.setOnAction(e->{
-                reviewWorkflow.returnForm(file);
-                reviewWorkflow.getDataEntry().dataEntryScene(file, reviewWorkflow, primaryStage);
-                primaryStage.setScene(reviewWorkflow.getDataEntry().dataEntryScene);
-                window.close();
-            });
+            button.setOnAction(e->window.close());
         } else {
-            // If the form is complete, then the form gets sent to the approval stage
-            reviewWorkflow.getApproval().Adisplay(file, reviewWorkflow, primaryStage);
-            primaryStage.setScene(reviewWorkflow.getApproval().approvalScene);
+            rDisplay(newForm, system, primaryStage);
         }
     }
 
@@ -144,7 +141,11 @@ public class Review {
         grid.add(conf, 0, 15);
         // This button is for when the user finishes reviewing the form and wants to submit for revalidation
         Button button = new Button("OK");
-        button.setOnAction(e -> revalidate(file, primaryStage));
+        button.setOnAction(e -> {
+            // If the form is complete, then the form gets sent to the approval stage
+            reviewWorkflow.getApproval().Adisplay(file, reviewWorkflow, primaryStage);
+            primaryStage.setScene(reviewWorkflow.getApproval().approvalScene);
+        });
         grid.add(button, 1, 17);
         // This button is for when the user wishes to go back to the data entry screen to edit the form data
         Button back = new Button("Back");
