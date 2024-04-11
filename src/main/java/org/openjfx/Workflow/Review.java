@@ -53,6 +53,11 @@ public class Review {
                 window.setMinWidth(400);
                 window.setMinHeight(200);
             } 
+            else if (newForm.getFormStatus() == FormStatus.ERROR) {
+                label.setText("Error! Data has incorrect format!");
+                window.setMinWidth(250);
+                window.setMinHeight(200);
+            }
             // This button returns the user to the data entry
             Button button = new Button("Ok");
             VBox layout = new VBox(10);

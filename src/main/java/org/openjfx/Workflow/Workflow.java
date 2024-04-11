@@ -101,6 +101,7 @@ public class Workflow {
         newForm.setImmigrant(newImmigrant);
         newForm.setDependent(newDependent);
         for (int i = 0; i<fields.size(); i++){ //iterate over arrayList of textfields
+            try {
             switch (i) {
                 /*Immigrant info
                  * get the immigrant associated with the form
@@ -264,6 +265,11 @@ public class Workflow {
                     newForm.updateStatus(FormStatus.COMPLETE); 
                     break; // the form should be complete if gotten this far
             }
+        }
+        catch (NumberFormatException e) {
+            flag = false;
+            newForm.updateStatus(FormStatus.ERROR);
+        }
             if (flag = false) break;
         }
         return newForm;
