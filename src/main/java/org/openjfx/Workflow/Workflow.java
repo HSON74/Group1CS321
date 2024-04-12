@@ -270,7 +270,7 @@ public class Workflow {
                 flag = false;
                 newForm.updateStatus(FormStatus.ERROR);
             }
-            if (flag = false) break;
+            if (flag == false) break;
         }
         return newForm;
     }
