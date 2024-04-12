@@ -254,7 +254,7 @@ public class Workflow {
                 System.out.println(19);
             } 
             if (Helper.nullStringNull(fields.get(20).getText()) != null) {
-                newForm.getDependent().setLastName(fields.get(21).getText());
+                newForm.getDependent().setLastName(fields.get(20).getText());
                 count++;
                 newForm.updateStatus(FormStatus.INPROGRESS);
                 System.out.println(20);

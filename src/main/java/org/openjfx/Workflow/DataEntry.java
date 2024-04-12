@@ -48,7 +48,7 @@ public class DataEntry {
 
         //arraylist of textfields to keep track of later
 
-        ArrayList<TextField> fields = systemForm.getFields(); 
+        ArrayList<TextField> fields = new ArrayList<>(); 
         for (int j =0; j<2; j++){ // the first iteration will be for the immigrant and second iteration will be for dependent
             String person = "Immigrant ";
             if (j == 1){ //second iteration
@@ -146,7 +146,9 @@ public class DataEntry {
                     
             //     }}
         systemForm.updateStatus(FormStatus.COMPLETE);
-        DataEntryWorkflow.getReview().revalidate(systemForm, primaryStage);//hand the form off to the review stage
+        systemForm.setFields(fields);
+        DataEntryWorkflow.getReview().revalidate(fields, system, primaryStage);
+        DataEntryWorkflow.getReview().rDisplay(form, system, primaryStage);//systemForm.getFields(), DataEntryWorkflow, primaryStage);//hand the form off to the review stage
         primaryStage.setScene(DataEntryWorkflow.getReview().rScene);
             
         });

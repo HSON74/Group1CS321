@@ -22,8 +22,10 @@ public class Form {
         this.formStatus = status;
     }
     public ArrayList<TextField> getFields(){
-        this.fields = new ArrayList<>();
         return this.fields;
+    }
+    public void setFields(ArrayList<TextField> fields){
+        this.fields = fields;
     }
     /*
      * Setter and Getter for the Form Class
