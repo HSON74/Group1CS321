@@ -212,9 +212,18 @@ public class Approval {
                             Text myText = new Text(
                                     "Contragulation, you complete the form.\n" + "Please close the form\n");
                             tempGridPane.add(myText, 1, 1);
-                            approvalGridPane.setScaleShape(false);
                             approvalCompleteScene = new Scene(tempGridPane, 250, 250);
                             minStage.setScene(approvalCompleteScene);
+                            minStage.showAndWait();
+                        } else {
+                            Stage minStage = new Stage();
+                            minStage.setTitle("Result of Form");
+                            GridPane tempGridPane = new GridPane();
+                            Text myText = new Text(
+                                    "Your Form is missing something in: " + status);
+                            tempGridPane.add(myText, 1, 1);
+                            rejectScene = new Scene(tempGridPane, 250, 250);
+                            minStage.setScene(rejectScene);
                             minStage.showAndWait();
                         }
                     } else if (isAdd) {
@@ -273,7 +282,6 @@ public class Approval {
             database.checkData(iPid, dPid, status);
             return true;
         } else {
-            GridPane myReject = new GridPane();
             return false;
         }
     }
