@@ -91,187 +91,298 @@ public class Workflow {
         return workflowDatabase.addData(form);
     }
 
-
+    /* This function creates a new form during revalidation */
     public Form generateForm(List<TextField> fields) {
-        // This flag will be marked false if there's something wrong with the data
-        boolean flag = true;
+        // This count will count how many fields have been filled out
+        int count = 0;
+        // The new form gets created
         Form newForm = new Form();
         Immigrant newImmigrant = new Immigrant();
         Dependent newDependent = new Dependent();
         newForm.setImmigrant(newImmigrant);
         newForm.setDependent(newDependent);
-        for (int i = 0; i<fields.size(); i++){ //iterate over arrayList of textfields
-            try {
-                switch (i) {
-                    /*Immigrant info
-                    * get the immigrant associated with the form
-                    * set each member of the immigrant class by accessing the arraylist of created fields,
-                    *      and iterating over the arraylist and at each field, retrieve the string text. If 
-                    *      necessary parse the information into an Integer or Boolean so that it matches the 
-                    *      arguments of the called method. 
-                    */
-                    case 0: 
-                        if (Helper.nullStringNull(fields.get(i).getText()) == null) flag = false;
-                        else newForm.getImmigrant().setFirstName(fields.get(i).getText()); 
-                        break;
-                    case 1:
-                        if (Helper.nullStringNull(fields.get(i).getText()) == null) newForm.getImmigrant().setMiddleName("");
-                        else newForm.getImmigrant().setMiddleName(fields.get(i).getText()); 
-                        break;
-                    case 2: 
-                        if (Helper.nullStringNull(fields.get(i).getText()) == null) flag = false;
-                        else newForm.getImmigrant().setLastName(fields.get(i).getText()); 
-                        break;
-                    case 3: 
-                        if (Helper.checkAge(Integer.parseInt(fields.get(i).getText())) == 0) flag = false;
-                        else newForm.getImmigrant().setAge(Integer.parseInt(fields.get(i).getText()));
-                        break;
-                    case 4: 
-                        if (Helper.intToMonth(Integer.parseInt(fields.get(i).getText())) == null) flag = false;
-                        else newForm.getImmigrant().setBirthMonth(Integer.parseInt(fields.get(i).getText())); 
-                        break;
-                    case 5: 
-                        if (Helper.intToYear(Integer.parseInt(fields.get(i+1).getText())) == null) flag = false;
-                        else newForm.getImmigrant().setBirthYear(Integer.parseInt(fields.get(i).getText())); 
-                        break;
-                    case 6: 
-                        if (Helper.intToDay(newForm.getImmigrant().getbirthMonth(), Integer.parseInt(fields.get(i-1).getText()), newForm.getImmigrant().getbirthYear()) == null) {
-                            flag = false;
-                        }
-                        else newForm.getImmigrant().setBirthDay(Integer.parseInt(fields.get(i).getText())); 
-                        break;
-                    case 7: 
-                        if (Helper.ssNumberCheck(Integer.parseInt(fields.get(i).getText())) == 0) flag = false;
-                        else newForm.getImmigrant().setSSNumber(Integer.parseInt(fields.get(i).getText())); 
-                        break;
-                    case 8: 
-                        if (Helper.nullStringNull(fields.get(i).getText()) == null) flag = false;
-                        else newForm.getImmigrant().setImmigrantPid(Integer.parseInt(fields.get(i).getText())); 
-                        break;
-                    case 9: 
-                        if (Helper.nullStringNull(fields.get(i).getText()) == null) flag = false;
-                        else newForm.getImmigrant().setDependentPid(Integer.parseInt(fields.get(i).getText())); 
-                        break;
-                    case 10: 
-                        if (Helper.nullStringNull(fields.get(i).getText()) == null) flag = false;
-                        else newForm.getImmigrant().setRace(fields.get(i).getText()); 
-                        break;
-                    case 11: 
-                        if (Helper.nullStringNull(fields.get(i).getText()) == null) flag = false;
-                        else newForm.getImmigrant().setGender(fields.get(i).getText()); 
-                        break;
-                    case 12: 
-                        if (Helper.BooleantoYN(Boolean.parseBoolean(fields.get(i).getText())) == null) flag = false;
-                        else newForm.getImmigrant().setMarried(Boolean.parseBoolean(fields.get(i).getText())); 
-                        break;
-                    case 13: 
-                        if (Helper.nullStringNull(fields.get(i).getText()) == null) flag = false;
-                        else newForm.getImmigrant().setPhoneNumber(fields.get(i).getText());
-                        break;
-                    case 14: 
-                        if (Helper.nullStringNull(fields.get(i).getText()) == null) flag = false;
-                        else newForm.getImmigrant().setFather(fields.get(i).getText());
-                        break;
-                    case 15:
-                        if (Helper.nullStringNull(fields.get(i).getText()) == null) flag = false;
-                        else newForm.getImmigrant().setMother(fields.get(i).getText());
-                        break;
-                    case 16: 
-                        if (Helper.nullStringNull(fields.get(i).getText()) == null) flag = false;
-                        else newForm.getImmigrant().setAddress(fields.get(i).getText());
-                        break;
-                    case 17: 
-                        if (Helper.BooleantoYN(Boolean.parseBoolean(fields.get(i).getText())) == null) flag = false;
-                        else newForm.getImmigrant().setemploymentStatus(Boolean.parseBoolean(fields.get(i).getText())); 
-                        break;
-                /*Dependent info
-                    * get the immigrant associated with the form
-                    * set each member of the immigrant class by accessing the arraylist of created fields,
-                    *      and iterating over the arraylist and at each field, retrieve the string text. If 
-                    *      necessary parse the information into an Integer or Boolean so that it matches the 
-                    *      arguments of the called method. 
-                    */
-                    case 18: 
-                        if (Helper.nullStringNull(fields.get(i).getText()) == null) flag = false;
-                        else newForm.getDependent().setFirstName(fields.get(i).getText()); 
-                        break;
-                    case 19: 
-                        if (Helper.nullStringNull(fields.get(i).getText()) == null) newForm.getImmigrant().setMiddleName("");
-                        else newForm.getDependent().setMiddleName(fields.get(i).getText()); 
-                        break;
-                    case 20:
-                        if (Helper.nullStringNull(fields.get(i).getText()) == null) flag = false;
-                        else newForm.getDependent().setLastName(fields.get(i).getText()); 
-                        break;
-                    case 21: 
-                        if (Helper.checkAge(Integer.parseInt(fields.get(i).getText())) == 0) flag = false;
-                        else newForm.getDependent().setAge(Integer.parseInt(fields.get(i).getText()));
-                        break;
-                    case 22:
-                        if (Helper.intToMonth(Integer.parseInt(fields.get(i).getText())) == null) flag = false;
-                        else newForm.getDependent().setBirthMonth(Integer.parseInt(fields.get(i).getText())); 
-                        break;
-                    case 23:
-                        if (Helper.intToYear(Integer.parseInt(fields.get(i+1).getText())) == null) flag = false;
-                        else newForm.getDependent().setBirthYear(Integer.parseInt(fields.get(i).getText())); 
-                        break;
-                    case 24:
-                        if (Helper.intToDay(newForm.getImmigrant().getbirthMonth(), Integer.parseInt(fields.get(i-1).getText()), newForm.getImmigrant().getbirthYear()) == null) {
-                            flag = false;
-                        }
-                        else newForm.getDependent().setBirthDay(Integer.parseInt(fields.get(i).getText())); 
-                        break;
-                    case 25:
-                        if (Helper.ssNumberCheck(Integer.parseInt(fields.get(i).getText())) == 0) flag = false;
-                        else newForm.getDependent().setSSNumber(Integer.parseInt(fields.get(i).getText())); 
-                        break;
-                    case 26: newForm.getDependent().setImmigrantPid(newForm.getImmigrant().getImmigrantPid()); break;
-                    case 27: newForm.getDependent().setDependentPid(newForm.getImmigrant().getDependentPid()); break;
-                    case 28:
-                        if (Helper.nullStringNull(fields.get(i).getText()) == null) flag = false;
-                        else newForm.getDependent().setRace(fields.get(i).getText()); 
-                        break;
-                    case 29:
-                        if (Helper.nullStringNull(fields.get(i).getText()) == null) flag = false;
-                        else newForm.getDependent().setGender(fields.get(i).getText()); 
-                        break;
-                    case 30:
-                        if (Helper.BooleantoYN(Boolean.parseBoolean(fields.get(i).getText())) == null) flag = false;
-                        else newForm.getDependent().setMarried(Boolean.parseBoolean(fields.get(i).getText())); 
-                        break;
-                    case 31: 
-                        if (Helper.nullStringNull(fields.get(i).getText()) == null) flag = false;
-                        else newForm.getDependent().setPhoneNumber(fields.get(i).getText());
-                        break;
-                    case 32:
-                        if (Helper.nullStringNull(fields.get(i).getText()) == null) flag = false;
-                        else newForm.getDependent().setFather(fields.get(i).getText());
-                        break;
-                    case 33:
-                        if (Helper.nullStringNull(fields.get(i).getText()) == null) flag = false;
-                        else newForm.getDependent().setMother(fields.get(i).getText());
-                        break;
-                    case 34:
-                        if (Helper.nullStringNull(fields.get(i).getText()) == null) flag = false;
-                        else newForm.getDependent().setAddress(fields.get(i).getText());
-                        break;
-                    case 35:
-                        if (Helper.BooleantoYN(Boolean.parseBoolean(fields.get(i).getText())) == null) flag = false;
-                        else newForm.getDependent().setemploymentStatus(Boolean.parseBoolean(fields.get(i).getText())); 
-                        break;
-                    case 36: 
-                        if (Helper.BooleantoYN(Boolean.parseBoolean(fields.get(i).getText())) == null) flag = false;
-                        else newForm.getDependent().setPrevClaim(Boolean.parseBoolean(fields.get(i).getText())); 
-                        newForm.updateStatus(FormStatus.COMPLETE); 
-                        break; // the form should be complete if gotten this far
+        // The form starts off as empty
+        newForm.updateStatus(FormStatus.EMPTY);
+        try {
+            /*Immigrant info
+            * get the immigrant associated with the form
+            * set each member of the immigrant class by accessing the arraylist of created fields,
+            * and iterating over the arraylist and at each field, retrieve the string text. If 
+            * necessary parse the information into an Integer or Boolean so that it matches the 
+            * arguments of the called method. 
+            */
+            // Every time a field has been filled out, the form will be marked in progress
+            if (Helper.nullStringNull(fields.get(0).getText()) != null) {
+                newForm.getImmigrant().setFirstName(fields.get(0).getText());
+                count++;
+                newForm.updateStatus(FormStatus.INPROGRESS);
+                System.out.println(0);
+            }
+            if (Helper.nullStringNull(fields.get(1).getText()) != null) {
+                newForm.getImmigrant().setMiddleName(fields.get(1).getText());
+                count++;
+                newForm.updateStatus(FormStatus.INPROGRESS);
+                System.out.println(1);
+            }
+            if (Helper.nullStringNull(fields.get(2).getText()) != null) {
+                newForm.getImmigrant().setLastName(fields.get(2).getText());
+                count++;
+                newForm.updateStatus(FormStatus.INPROGRESS);
+                System.out.println(2);
+            }
+            if (Helper.nullStringNull(fields.get(3).getText()) != null) {
+                if (Helper.checkAge(Integer.parseInt(fields.get(3).getText())) != 0) {
+                    newForm.getImmigrant().setAge(Integer.parseInt(fields.get(3).getText()));
+                    count++;
+                    newForm.updateStatus(FormStatus.INPROGRESS);
+                    System.out.println(3);
                 }
             }
-            catch (NumberFormatException e) {
-                flag = false;
-                newForm.updateStatus(FormStatus.ERROR);
+            if (Helper.nullStringNull(fields.get(4).getText()) != null) {
+                if (Helper.intToMonth(Integer.parseInt(fields.get(4).getText())) != null) {
+                    newForm.getImmigrant().setBirthMonth(Integer.parseInt(fields.get(4).getText()));
+                    count++;
+                    newForm.updateStatus(FormStatus.INPROGRESS);
+                    System.out.println(4);
+                }
             }
-            if (flag == false) break;
+            if (Helper.nullStringNull(fields.get(6).getText()) != null) {
+                if (Helper.intToYear(Integer.parseInt(fields.get(6).getText())) != null) {
+                    newForm.getImmigrant().setBirthYear(Integer.parseInt(fields.get(6).getText()));
+                    count++;
+                    newForm.updateStatus(FormStatus.INPROGRESS);
+                    System.out.println(5);
+                }
+            }
+            if (Helper.nullStringNull(fields.get(5).getText()) != null) { 
+                if (Helper.intToDay(newForm.getImmigrant().getbirthMonth(), Integer.parseInt(fields.get(5).getText()), newForm.getImmigrant().getbirthYear()) != null) {
+                    newForm.getImmigrant().setBirthDay(Integer.parseInt(fields.get(5).getText()));
+                    count++;
+                    newForm.updateStatus(FormStatus.INPROGRESS);
+                    System.out.println(6);
+                }
+            }
+            if (Helper.nullStringNull(fields.get(7).getText()) != null) {
+                if (Helper.ssNumberCheck(Integer.parseInt(fields.get(7).getText())) != 0) {
+                    newForm.getImmigrant().setSSNumber(Integer.parseInt(fields.get(7).getText()));
+                    count++;
+                    newForm.updateStatus(FormStatus.INPROGRESS);
+                    System.out.println(7);
+                }
+            }
+            if (Helper.nullStringNull(fields.get(8).getText()) != null) {
+                newForm.getImmigrant().setImmigrantPid(Integer.parseInt(fields.get(8).getText()));
+                count++;
+                newForm.updateStatus(FormStatus.INPROGRESS);
+                System.out.println(8);
+            }
+            if (Helper.nullStringNull(fields.get(9).getText()) != null) {
+                newForm.getImmigrant().setDependentPid(Integer.parseInt(fields.get(9).getText()));
+                count++;
+                newForm.updateStatus(FormStatus.INPROGRESS);
+                System.out.println(9);
+            }
+            if (Helper.nullStringNull(fields.get(10).getText()) != null) {
+                newForm.getImmigrant().setRace(fields.get(10).getText());
+                count++;
+                newForm.updateStatus(FormStatus.INPROGRESS);
+                System.out.println(10);
+            }
+            if (Helper.nullStringNull(fields.get(11).getText()) != null) {
+                newForm.getImmigrant().setGender(fields.get(11).getText());
+                count++;
+                newForm.updateStatus(FormStatus.INPROGRESS);
+                System.out.println(11);
+            }
+            if (Helper.nullStringNull(fields.get(12).getText()) != null) {
+                if (Helper.BooleantoYN(Boolean.parseBoolean(fields.get(12).getText())) != null) {
+                    newForm.getImmigrant().setMarried(Boolean.parseBoolean(fields.get(12).getText()));
+                    count++;
+                    newForm.updateStatus(FormStatus.INPROGRESS);
+                    System.out.println(12);
+                }
+            }
+            if (Helper.nullStringNull(fields.get(13).getText()) != null) {
+                newForm.getImmigrant().setPhoneNumber(fields.get(13).getText());
+                count++;
+                newForm.updateStatus(FormStatus.INPROGRESS);
+                System.out.println(13);
+            }
+            if (Helper.nullStringNull(fields.get(14).getText()) != null) {
+                newForm.getImmigrant().setFather(fields.get(14).getText());
+                count++;
+                newForm.updateStatus(FormStatus.INPROGRESS);
+                System.out.println(14);
+            }
+            if (Helper.nullStringNull(fields.get(15).getText()) != null) {
+                newForm.getImmigrant().setMother(fields.get(15).getText());
+                count++;
+                newForm.updateStatus(FormStatus.INPROGRESS);
+                System.out.println(15);
+            }
+            if (Helper.nullStringNull(fields.get(16).getText()) != null) {
+                newForm.getImmigrant().setAddress(fields.get(16).getText());
+                count++;
+                newForm.updateStatus(FormStatus.INPROGRESS);
+                System.out.println(16);
+            }
+            if (Helper.nullStringNull(fields.get(17).getText()) != null) {
+                if (Helper.BooleantoYN(Boolean.parseBoolean(fields.get(17).getText())) != null) {
+                    newForm.getImmigrant().setemploymentStatus(Boolean.parseBoolean(fields.get(17).getText()));
+                    count++;
+                    newForm.updateStatus(FormStatus.INPROGRESS);
+                    System.out.println(17);
+                }
+            }
+            /*Dependent info
+            * get the immigrant associated with the form
+            * set each member of the immigrant class by accessing the arraylist of created fields,
+            * and iterating over the arraylist and at each field, retrieve the string text. If 
+            * necessary parse the information into an Integer or Boolean so that it matches the 
+            * arguments of the called method. 
+            */
+            if (Helper.nullStringNull(fields.get(18).getText()) != null) {
+                newForm.getDependent().setFirstName(fields.get(18).getText());
+                count++;
+                newForm.updateStatus(FormStatus.INPROGRESS);
+                System.out.println(18);
+            }
+            if (Helper.nullStringNull(fields.get(19).getText()) != null) {
+                newForm.getDependent().setMiddleName(fields.get(19).getText());
+                count++;
+                newForm.updateStatus(FormStatus.INPROGRESS);
+                System.out.println(19);
+            } 
+            if (Helper.nullStringNull(fields.get(20).getText()) != null) {
+                newForm.getDependent().setLastName(fields.get(21).getText());
+                count++;
+                newForm.updateStatus(FormStatus.INPROGRESS);
+                System.out.println(20);
+            }
+            if (Helper.nullStringNull(fields.get(21).getText()) != null) {
+                if (Helper.checkAge(Integer.parseInt(fields.get(21).getText())) != 0) {
+                    newForm.getDependent().setAge(Integer.parseInt(fields.get(21).getText()));
+                    count++;
+                    newForm.updateStatus(FormStatus.INPROGRESS);
+                    System.out.println(21);
+                }
+            }
+            if (Helper.nullStringNull(fields.get(22).getText()) != null) {
+                if (Helper.intToMonth(Integer.parseInt(fields.get(22).getText())) != null) {
+                    newForm.getDependent().setBirthMonth(Integer.parseInt(fields.get(22).getText()));
+                    count++;
+                    newForm.updateStatus(FormStatus.INPROGRESS);
+                    System.out.println(22);
+                }
+            }
+            if (Helper.nullStringNull(fields.get(24).getText()) != null) {
+                if (Helper.intToYear(Integer.parseInt(fields.get(24).getText())) != null) {
+                    newForm.getDependent().setBirthYear(Integer.parseInt(fields.get(24).getText())); 
+                    count++;
+                    newForm.updateStatus(FormStatus.INPROGRESS);
+                    System.out.println(23);
+                }
+            }
+            if (Helper.nullStringNull(fields.get(23).getText()) != null) {
+                if (Helper.intToDay(newForm.getImmigrant().getbirthMonth(), Integer.parseInt(fields.get(23).getText()), newForm.getImmigrant().getbirthYear()) != null) {
+                    newForm.getDependent().setBirthDay(Integer.parseInt(fields.get(23).getText()));
+                    count++;
+                    newForm.updateStatus(FormStatus.INPROGRESS);
+                    System.out.println(24);
+                }
+            }
+            if (Helper.nullStringNull(fields.get(25).getText()) != null) {
+                if (Helper.ssNumberCheck(Integer.parseInt(fields.get(25).getText())) != 0) {
+                    newForm.getDependent().setSSNumber(Integer.parseInt(fields.get(25).getText()));
+                    count++;
+                    newForm.updateStatus(FormStatus.INPROGRESS);
+                    System.out.println(25);
+                }
+            }
+            if (Helper.nullStringNull(fields.get(26).getText()) != null) {
+                newForm.getDependent().setImmigrantPid(Integer.parseInt(fields.get(26).getText()));
+                count++;
+                newForm.updateStatus(FormStatus.INPROGRESS);
+                System.out.println(26);
+            }
+            if (Helper.nullStringNull(fields.get(27).getText()) != null) {
+                newForm.getDependent().setDependentPid(Integer.parseInt(fields.get(27).getText()));
+                count++;
+                newForm.updateStatus(FormStatus.INPROGRESS);
+                System.out.println(27);
+            }
+            if (Helper.nullStringNull(fields.get(28).getText()) != null) {
+                newForm.getDependent().setRace(fields.get(28).getText());
+                count++;
+                newForm.updateStatus(FormStatus.INPROGRESS);
+                System.out.println(28);
+            }
+            if (Helper.nullStringNull(fields.get(29).getText()) != null) {
+                newForm.getDependent().setGender(fields.get(29).getText());
+                count++;
+                newForm.updateStatus(FormStatus.INPROGRESS);
+                System.out.println(29);
+            }
+            if (Helper.nullStringNull(fields.get(30).getText()) != null) {
+                if (Helper.BooleantoYN(Boolean.parseBoolean(fields.get(30).getText())) != null) {
+                    newForm.getDependent().setMarried(Boolean.parseBoolean(fields.get(30).getText()));
+                    count++;
+                    newForm.updateStatus(FormStatus.INPROGRESS);
+                    System.out.println(30);
+                }
+            }
+            if (Helper.nullStringNull(fields.get(31).getText()) != null) {
+                newForm.getDependent().setPhoneNumber(fields.get(31).getText());
+                count++;
+                newForm.updateStatus(FormStatus.INPROGRESS);
+                System.out.println(31);
+            }
+            if (Helper.nullStringNull(fields.get(32).getText()) != null) {
+                newForm.getDependent().setFather(fields.get(32).getText());
+                count++;
+                newForm.updateStatus(FormStatus.INPROGRESS);
+                System.out.println(32);
+            }
+            if (Helper.nullStringNull(fields.get(33).getText()) != null) {
+                newForm.getDependent().setMother(fields.get(33).getText());
+                count++;
+                newForm.updateStatus(FormStatus.INPROGRESS);
+                System.out.println(33);
+            }
+            if (Helper.nullStringNull(fields.get(34).getText()) != null) {
+                newForm.getDependent().setAddress(fields.get(34).getText());
+                count++;
+                newForm.updateStatus(FormStatus.INPROGRESS);
+                System.out.println(34);
+            }
+            if (Helper.nullStringNull(fields.get(35).getText()) != null) {
+                if (Helper.BooleantoYN(Boolean.parseBoolean(fields.get(35).getText())) != null) {
+                    newForm.getDependent().setemploymentStatus(Boolean.parseBoolean(fields.get(35).getText()));
+                    count++;
+                    newForm.updateStatus(FormStatus.INPROGRESS);
+                    System.out.println(35);
+                }
+            }
+            if (Helper.nullStringNull(fields.get(36).getText()) != null) {
+                if (Helper.BooleantoYN(Boolean.parseBoolean(fields.get(36).getText())) != null) {
+                    newForm.getDependent().setPrevClaim(Boolean.parseBoolean(fields.get(36).getText())); 
+                    count++;
+                    newForm.updateStatus(FormStatus.INPROGRESS);
+                    System.out.println(36);
+                }
+            }
+            System.out.println(count);
+            // If there are no fields filled, then the form is still empty
+            if (count == 0) newForm.updateStatus(FormStatus.EMPTY);
+            // Otherwise, if all fields are filled out, then the form is complete
+            else if (count >= 37) newForm.updateStatus(FormStatus.COMPLETE);
         }
+        // This is to check if NumberFormatException gets caught during execution
+        catch (NumberFormatException e) {
+            // This marks the form as an error
+            newForm.updateStatus(FormStatus.ERROR);
+        }
+        // After that, the form gets returned
         return newForm;
     }
 

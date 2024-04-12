@@ -200,15 +200,16 @@ public class Helper {
     }
 
     public static String nullStringNull(String myString) {
-        if (myString == null || myString.equalsIgnoreCase("null") || myString.equalsIgnoreCase("N/A")) {
+        if (myString.equals("")) {
             return null;
-        } else {
+        }
+        else {
             return myString;
         }
     }
 
     public static int ssNumberCheck(int i) {
-        if ((i >= 100000000)&&(i < 1000000000)) return 0;
-        else return i;
+        if ((i >= 100000000)&&(i < 1000000000)) return i;
+        else return 0;
     }
 }
