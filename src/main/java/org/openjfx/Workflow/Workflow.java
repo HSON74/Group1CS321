@@ -95,6 +95,7 @@ public class Workflow {
     public Form generateForm(List<TextField> fields) {
         // This count will count how many fields have been filled out
         int count = 0;
+        int flag = 0;
         // The new form gets created
         Form newForm = new Form();
         Immigrant newImmigrant = new Immigrant();
@@ -137,6 +138,7 @@ public class Workflow {
                     newForm.updateStatus(FormStatus.INPROGRESS);
                     System.out.println(3);
                 }
+                else flag = 1;
             }
             if (Helper.nullStringNull(fields.get(4).getText()) != null) {
                 if (Helper.intToMonth(Integer.parseInt(fields.get(4).getText())) != null) {
@@ -145,14 +147,13 @@ public class Workflow {
                     newForm.updateStatus(FormStatus.INPROGRESS);
                     System.out.println(4);
                 }
+                else flag = 1;
             }
             if (Helper.nullStringNull(fields.get(6).getText()) != null) {
-                if (Helper.intToYear(Integer.parseInt(fields.get(6).getText())) != null) {
-                    newForm.getImmigrant().setBirthYear(Integer.parseInt(fields.get(6).getText()));
-                    count++;
-                    newForm.updateStatus(FormStatus.INPROGRESS);
-                    System.out.println(5);
-                }
+                newForm.getImmigrant().setBirthYear(Integer.parseInt(fields.get(6).getText()));
+                count++;
+                newForm.updateStatus(FormStatus.INPROGRESS);
+                System.out.println(5);
             }
             if (Helper.nullStringNull(fields.get(5).getText()) != null) { 
                 if (Helper.intToDay(newForm.getImmigrant().getbirthMonth(), Integer.parseInt(fields.get(5).getText()), newForm.getImmigrant().getbirthYear()) != null) {
@@ -161,6 +162,7 @@ public class Workflow {
                     newForm.updateStatus(FormStatus.INPROGRESS);
                     System.out.println(6);
                 }
+                else flag = 1;
             }
             if (Helper.nullStringNull(fields.get(7).getText()) != null) {
                 if (Helper.ssNumberCheck(Integer.parseInt(fields.get(7).getText())) != 0) {
@@ -169,6 +171,7 @@ public class Workflow {
                     newForm.updateStatus(FormStatus.INPROGRESS);
                     System.out.println(7);
                 }
+                else flag = 1;
             }
             if (Helper.nullStringNull(fields.get(8).getText()) != null) {
                 newForm.getImmigrant().setImmigrantPid(Integer.parseInt(fields.get(8).getText()));
@@ -266,6 +269,7 @@ public class Workflow {
                     newForm.updateStatus(FormStatus.INPROGRESS);
                     System.out.println(21);
                 }
+                else flag = 1;
             }
             if (Helper.nullStringNull(fields.get(22).getText()) != null) {
                 if (Helper.intToMonth(Integer.parseInt(fields.get(22).getText())) != null) {
@@ -274,14 +278,13 @@ public class Workflow {
                     newForm.updateStatus(FormStatus.INPROGRESS);
                     System.out.println(22);
                 }
+                else flag = 1;
             }
             if (Helper.nullStringNull(fields.get(24).getText()) != null) {
-                if (Helper.intToYear(Integer.parseInt(fields.get(24).getText())) != null) {
-                    newForm.getDependent().setBirthYear(Integer.parseInt(fields.get(24).getText())); 
-                    count++;
-                    newForm.updateStatus(FormStatus.INPROGRESS);
-                    System.out.println(23);
-                }
+                newForm.getDependent().setBirthYear(Integer.parseInt(fields.get(24).getText())); 
+                count++;
+                newForm.updateStatus(FormStatus.INPROGRESS);
+                System.out.println(23);
             }
             if (Helper.nullStringNull(fields.get(23).getText()) != null) {
                 if (Helper.intToDay(newForm.getImmigrant().getbirthMonth(), Integer.parseInt(fields.get(23).getText()), newForm.getImmigrant().getbirthYear()) != null) {
@@ -298,6 +301,7 @@ public class Workflow {
                     newForm.updateStatus(FormStatus.INPROGRESS);
                     System.out.println(25);
                 }
+                else flag = 1;
             }
             if (Helper.nullStringNull(fields.get(26).getText()) != null) {
                 newForm.getDependent().setImmigrantPid(Integer.parseInt(fields.get(26).getText()));
@@ -372,8 +376,10 @@ public class Workflow {
                 }
             }
             System.out.println(count);
+            // If the error flag is marked, then the form has an error
+            if (flag == 1) newForm.updateStatus(FormStatus.ERROR);
             // If there are no fields filled, then the form is still empty
-            if (count == 0) newForm.updateStatus(FormStatus.EMPTY);
+            else if (count == 0) newForm.updateStatus(FormStatus.EMPTY);
             // Otherwise, if all fields are filled out, then the form is complete
             else if (count >= 37) newForm.updateStatus(FormStatus.COMPLETE);
         }
