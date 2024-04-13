@@ -8,6 +8,7 @@ org/openjfx/Workflow/Window.class
 org/openjfx/Business/Form.class
 org/openjfx/SystemInfo.class
 org/openjfx/Workflow/Workflow.class
+org/openjfx/Workflow/Email.class
 org/openjfx/Workflow/Approval.class
 org/openjfx/Business/Immigrant.class
 org/openjfx/Workflow/DataEntry.class
