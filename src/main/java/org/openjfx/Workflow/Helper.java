@@ -212,4 +212,9 @@ public class Helper {
         if ((i >= 100000000)&&(i < 1000000000)) return i;
         else return 0;
     }
+
+    public static String phoneNumberCheck(String line) {
+        if (line.length() == 10) return line;
+        else return null;
+    }
 }
