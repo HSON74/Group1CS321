@@ -147,7 +147,7 @@ public class DataEntry {
             //     }}
         systemForm.updateStatus(FormStatus.COMPLETE);
         systemForm.setFields(fields);
-        DataEntryWorkflow.getReview().revalidate(form, system);
+        DataEntryWorkflow.getReview().revalidate(fields, system, primaryStage);
         DataEntryWorkflow.getReview().rDisplay(form, system, primaryStage);//systemForm.getFields(), DataEntryWorkflow, primaryStage);//hand the form off to the review stage
         primaryStage.setScene(DataEntryWorkflow.getReview().rScene);
             
