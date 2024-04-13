@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -25,8 +26,8 @@ public class Approval {
     private Database database; //
     private ApprovalStatus approvalStatus; //
     private Workflow approvalWorkflow; // The Approval workflow that is currently run on.
-    @SuppressWarnings("unused")
     private boolean isAdd; //
+    private String status = "";
 
     // Application Scene update
     public Scene approvalScene;
@@ -80,7 +81,7 @@ public class Approval {
                 FontPosture.REGULAR, 25));
         String[] formI = new String[approvalTextsI.length];
         String[] formD = new String[approvalTextsD.length];
-        String status = "";
+
         if (checkFrom(status)) {
             System.out.println("Form exist");
             int i = 0;
@@ -209,9 +210,22 @@ public class Approval {
                             Stage minStage = new Stage();
                             minStage.setTitle("Result of Form");
                             GridPane tempGridPane = new GridPane();
+                            Text emailPlease = new Text(
+                                    "Please enter your email, so can email you the form complete: ");
+                            TextField emailTextEnter = new TextField();
                             Text myText = new Text(
                                     "Contragulation, you complete the form.\n" + "Please close the form\n");
+                            Button enterButton = new Button();
+
+                            enterButton.setText("Enter");
                             tempGridPane.add(myText, 1, 1);
+                            tempGridPane.add(emailPlease, 1, 2);
+                            tempGridPane.add(emailTextEnter, 1, 3);
+                            tempGridPane.add(enterButton, 1, 4);
+                            enterButton.setOnAction(d -> {
+                                Email m = new Email();
+                                m.display(emailTextEnter.toString(), form, minStage);
+                            });
                             approvalCompleteScene = new Scene(tempGridPane, 250, 250);
                             minStage.setScene(approvalCompleteScene);
                             minStage.showAndWait();
@@ -230,6 +244,22 @@ public class Approval {
                         Stage minStage = new Stage();
                         minStage.setTitle("Result of Form");
                         GridPane tempGridPane = new GridPane();
+                        Text myText = new Text(
+                                "Your Form is already submitted\n" + "Please close the form\n");
+                        Text emailPlease = new Text(
+                                "Please enter your email, so can email you the form complete: ");
+                        TextField emailTextEnter = new TextField();
+                        Button enterButton = new Button();
+
+                        enterButton.setText("Enter");
+                        tempGridPane.add(myText, 1, 1);
+                        tempGridPane.add(emailPlease, 1, 2);
+                        tempGridPane.add(emailTextEnter, 1, 3);
+                        tempGridPane.add(enterButton, 1, 4);
+                        enterButton.setOnAction(d -> {
+                            Email m = new Email();
+                            m.display(emailTextEnter.toString(), form, minStage);
+                        });
                         approvalCompleteScene = new Scene(tempGridPane, 250, 250);
                         minStage.setScene(approvalCompleteScene);
                         minStage.showAndWait();
@@ -275,11 +305,10 @@ public class Approval {
             System.err.println("The immigrant or dependent form ");
             return false;
         }
-        String informationForCheck = "";
-        if (fullCheck(informationForCheck)) {
+        if (fullCheck(status)) {
             int iPid = approvalForm.getImmigrant().getImmigrantPid();
             int dPid = approvalForm.getDependent().getDependentPid();
-            database.checkData(iPid, dPid, status);
+            System.out.println(database.checkData(iPid, dPid));
             return true;
         } else {
             return false;

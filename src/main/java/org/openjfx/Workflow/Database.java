@@ -105,10 +105,13 @@ public class Database {
      * into the system record.
      */
     public boolean addData(Form form) {
+
         if (form == null) {
+            System.out.println("Problem 1");
             return false;
         }
         if (form.getImmigrant() == null || form.getDependent() == null) {
+            System.out.println("Problem 2");
             return false;
         }
         boolean addDatatoFile = saveData(form);
@@ -117,25 +120,19 @@ public class Database {
     }
 
     // Check the data are in system.
-    public boolean checkData(int iPID, int dPID, String result) {
+    public String checkData(int iPID, int dPID) {
         Immigrant myImmigrant = getDataImmigrant(iPID);
         Dependent myDependent = getDataDependent(dPID);
         if (myImmigrant == null && myDependent == null) {
-            result = "both is not system";
-            return true;
+            return "both is not system";
+        } else if (myImmigrant == null) {
+            return "Immigrant is not system";
+
+        } else if (myDependent == null) {
+            return "Dependent is not system";
+        } else {
+            return "Information need update";
         }
-        if (myImmigrant == null) {
-            System.err.println("Immigrant information is not in system");
-            result = "Immigrant is not system";
-            return false;
-        }
-        if (myDependent == null) {
-            System.err.println("Dependent information is not in system");
-            result = "Dependent is not system";
-            return false;
-        }
-        result = "Information need update";
-        return true;
     }
 
     /*
@@ -305,50 +302,46 @@ public class Database {
         }
         Immigrant iForm = inputForm.getImmigrant();
         Dependent dForm = inputForm.getDependent();
-        String status = "";
-        if (checkData(iForm.getImmigrantPid(), dForm.getDependentPid(), status)) {
-            if (status.equalsIgnoreCase("both is not system")) {
+        String status = checkData(iForm.getImmigrantPid(), dForm.getDependentPid());
+
+        if (status.equalsIgnoreCase("both is not system")) {
+            dForm.setPrevClaim(dForm.getPrevClaim());
+            iForm.setImmigrantPid(dForm.getDependentPid());
+            addImmigrantToData(iForm);
+            addDependentToData(dForm);
+        } else if (status.equalsIgnoreCase("Information need update")) {
+            if ((dForm = getDataDependent(dForm.getDependentPid())) != null
+                    && (iForm = getDataImmigrant(dForm.getImmigrantPid())) != null) {
+                Dependent tempDform = getDataDependent(dForm.getDependentPid());
+                if (tempDform.getPrevClaim()) {
+                    return false;
+                }
+                updateImmigrant(iForm);
+                updateDependent(dForm);
+            }
+        } else if (status.equalsIgnoreCase("Immigrant is not system")) {
+            Dependent tempDform = getDataDependent(dForm.getDependentPid());
+            if (tempDform != null) {
+                if (tempDform.getPrevClaim()) {
+                    return false;
+                }
                 dForm.setPrevClaim(dForm.getPrevClaim());
                 iForm.setImmigrantPid(dForm.getDependentPid());
                 addImmigrantToData(iForm);
-                addDependentToData(dForm);
-            } else if (status.equalsIgnoreCase("Information need update")) {
-                if ((dForm = getDataDependent(dForm.getDependentPid())) != null
-                        && (iForm = getDataImmigrant(dForm.getImmigrantPid())) != null) {
-                    Dependent tempDform = getDataDependent(dForm.getDependentPid());
-                    if (tempDform.getPrevClaim()) {
-                        return false;
-                    }
-                    updateImmigrant(iForm);
-                    updateDependent(dForm);
-                } else {
-                    return false;
-                }
-            } else {
-                if (status.equalsIgnoreCase("Immigrant is not system")) {
-                    Dependent tempDform = getDataDependent(dForm.getDependentPid());
-                    if (tempDform != null) {
-                        if (tempDform.getPrevClaim()) {
-                            return false;
-                        }
-                        dForm.setPrevClaim(dForm.getPrevClaim());
-                        iForm.setImmigrantPid(dForm.getDependentPid());
-                        addImmigrantToData(iForm);
-                        updateDependent(dForm);
-                    }
-                } else if (status.equalsIgnoreCase("Dependent is not system")) {
-                    if ((iForm = getDataImmigrant(dForm.getImmigrantPid())) != null) {
-                        dForm.setPrevClaim(dForm.getPrevClaim());
-                        iForm.setImmigrantPid(dForm.getDependentPid());
-                        updateImmigrant(iForm);
-                        addDependentToData(dForm);
-                    }
-                } else {
-                    return false;
-                }
+                updateDependent(dForm);
             }
+        } else if (status.equalsIgnoreCase("Dependent is not system")) {
+            if ((iForm = getDataImmigrant(dForm.getImmigrantPid())) != null) {
+                dForm.setPrevClaim(true);
+                iForm.setImmigrantPid(dForm.getDependentPid());
+                updateImmigrant(iForm);
+                addDependentToData(dForm);
+            }
+        } else {
+            return false;
         }
         return true;
+
     }
 
     /*
