@@ -7,7 +7,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -30,10 +29,10 @@ public class Approval {
     private String status = "";
 
     // Application Scene update
-    public Scene approvalScene;
-    public Scene emailScene;
-    public Scene approvalCompleteScene;
-    public Scene rejectScene;
+    protected Scene approvalScene;
+    protected Scene emailScene;
+    protected Scene approvalCompleteScene;
+    protected Scene rejectScene;
 
     /* Set the the application scene when the user sumbit the form for approval */
     public void Adisplay(Form form, Workflow system, Stage primaryStage) {
@@ -222,10 +221,7 @@ public class Approval {
                             tempGridPane.add(emailPlease, 1, 2);
                             tempGridPane.add(emailTextEnter, 1, 3);
                             tempGridPane.add(enterButton, 1, 4);
-                            enterButton.setOnAction(d -> {
-                                Email m = new Email();
-                                m.display(emailTextEnter.toString(), form, minStage);
-                            });
+                            enterButton.setOnAction(d -> Email.display(emailTextEnter.getText(), form, minStage));
                             approvalCompleteScene = new Scene(tempGridPane, 250, 250);
                             minStage.setScene(approvalCompleteScene);
                             minStage.showAndWait();
@@ -256,10 +252,7 @@ public class Approval {
                         tempGridPane.add(emailPlease, 1, 2);
                         tempGridPane.add(emailTextEnter, 1, 3);
                         tempGridPane.add(enterButton, 1, 4);
-                        enterButton.setOnAction(d -> {
-                            Email m = new Email();
-                            m.display(emailTextEnter.getText(), form, minStage);
-                        });
+                        enterButton.setOnAction(d -> Email.display(emailTextEnter.getText(), form, minStage));
                         approvalCompleteScene = new Scene(tempGridPane, 250, 250);
                         minStage.setScene(approvalCompleteScene);
                         minStage.showAndWait();
@@ -336,7 +329,6 @@ public class Approval {
      * in the system record.
      */
     public boolean connection() {
-        String status = "";
         if (checkFrom(status)) {
             setApprovalStatus(ApprovalStatus.COMPLETE);
             return database.addData(approvalForm);
@@ -368,8 +360,6 @@ public class Approval {
         if (approvalForm.getDependent() != null) {
             if (approvalForm.getImmigrant().getFirstName() == null) {
                 if (missingImmigrant.equalsIgnoreCase("")) {
-                    missingImmigrant = "Immigrant Field: First Name";
-                } else {
                     missingImmigrant = "Immigrant Field: First Name";
                 }
             } else if (approvalForm.getImmigrant().getLastName() == null) {
@@ -435,8 +425,6 @@ public class Approval {
             }
             if (approvalForm.getDependent().getFirstName() == null) {
                 if (missingDependent.equalsIgnoreCase("")) {
-                    missingDependent = "Dependent Field: First Name";
-                } else {
                     missingDependent = "Dependent Field: First Name";
                 }
             } else if (approvalForm.getDependent().getLastName() == null) {
