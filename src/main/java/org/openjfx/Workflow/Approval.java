@@ -47,7 +47,7 @@ public class Approval {
         }
         this.approvalForm = form;
         this.approvalWorkflow = system;
-        //
+        // Setup Text
         Text[] approvalTextsI = { new Text("First Name: "), new Text("Middle Name:"),
                 new Text("Last Name:"),
                 new Text("Age: "), new Text("Birth Month:"), new Text("Birth Day:"), new Text("Birth Year: "),
@@ -258,7 +258,7 @@ public class Approval {
                         tempGridPane.add(enterButton, 1, 4);
                         enterButton.setOnAction(d -> {
                             Email m = new Email();
-                            m.display(emailTextEnter.toString(), form, minStage);
+                            m.display(emailTextEnter.getText(), form, minStage);
                         });
                         approvalCompleteScene = new Scene(tempGridPane, 250, 250);
                         minStage.setScene(approvalCompleteScene);
@@ -267,14 +267,13 @@ public class Approval {
                 });
         rejectButton.setOnAction(e -> {
             if (isAdd) {
-                setDatabase(null, form);
+                setDatabase(null, null, form);
                 database.removeDependent(form.getImmigrant().getImmigrantPid());
                 database.removeDependent(form.getDependent().getDependentPid());
                 isAdd = false;
-            } else {
-                approvalWorkflow.getReview().rDisplay(this.getForm(), this.getWorkflow(), primaryStage);
-                primaryStage.setScene(approvalWorkflow.getReview().rScene);
             }
+            approvalWorkflow.getReview().rDisplay(this.getForm(), this.getWorkflow(), primaryStage);
+            primaryStage.setScene(approvalWorkflow.getReview().rScene);
         });
 
         // Scene set to application window
@@ -286,12 +285,28 @@ public class Approval {
 
     }
 
-    // Approval Class construct that will be call in the workflow.
+    // Approval Class constructer that will be call in the workflow.
+    public Approval(String databaseI, String databaseD, Form form) {
+        this.isAdd = false;
+        this.approvalForm = form;
+        setApprovalStatus(ApprovalStatus.INPROGRESS);
+        setDatabase(databaseI, databaseD, form);
+
+    }
+
+    public Approval(Form form) {
+        this.isAdd = false;
+        this.approvalForm = form;
+        setApprovalStatus(ApprovalStatus.INPROGRESS);
+        setDatabase(null, null, form);
+
+    }
+
     public Approval(String dataBase, Form form) {
         this.isAdd = false;
         this.approvalForm = form;
         setApprovalStatus(ApprovalStatus.INPROGRESS);
-        setDatabase(dataBase, form);
+        setDatabase(dataBase, null, form);
 
     }
 
@@ -493,9 +508,9 @@ public class Approval {
         return approvalForm;
     }
 
-    protected void setDatabase(String dataBase, Form form) {
+    protected void setDatabase(String dataBaseI, String dataBaseS, Form form) {
         System.out.println("System connect to database");
-        this.database = new Database(form, dataBase, null);
+        this.database = new Database(form, dataBaseI, dataBaseS);
     }
 
     protected Database getDatabase() {

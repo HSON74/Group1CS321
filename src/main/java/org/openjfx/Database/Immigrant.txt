@@ -1,2 +1,1 @@
-25/25/1/25/1/1/2000/1/123456789/1/1/Yes/1/1/1/Yes/1/1
-chris/p /price/24/1/1/2000/111 spring st/222334545/white/male/Yes/4345667788/mike/kate/Yes/2000/2000
+John/C/Doe/25/6/3/1999/4400 Elem Street/491038444/Caucasion/Male/Yes/192-123-4235/No One/No One/No/5/5

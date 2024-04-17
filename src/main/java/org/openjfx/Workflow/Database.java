@@ -23,31 +23,33 @@ import org.openjfx.Business.Immigrant;
  */
 public class Database {
     // Private class & variable.
-    private String dataNameForImmigrant; // The immigrant record the system current accessing.
-    private String dataNameForDependent; // The dependent record the system current accessing.
+    private String dataNameForImmigrant = null; // The immigrant record the system current accessing.
+    private String dataNameForDependent = null; // The dependent record the system current accessing.
 
     // protected class & variable.
-    protected ArrayList<Immigrant> databaseFormsImmigrant;
-    protected ArrayList<Dependent> databaseFormsDependent;
+    protected ArrayList<Immigrant> databaseFormsImmigrant; // The immigrant record the database.
+    protected ArrayList<Dependent> databaseFormsDependent; // The dependent record the database.
 
     /*
      * Inital the table by create a table or access
      * the table if the table exist.
      */
     public Database(Form form, String databaseNameImmigrant, String databaseNameDependent) {
-        if (databaseNameImmigrant == null) {
+        if (databaseNameImmigrant == null && databaseFormsImmigrant == null) {
             databaseNameImmigrant = "Immigrant";
         }
-        if (databaseNameDependent == null) {
+        if (databaseNameDependent == null && dataNameForDependent == null) {
             databaseNameDependent = "Dependent";
         }
-        this.dataNameForImmigrant = "./src/main/java/org/openjfx/Database/"
-                + databaseNameImmigrant
-                + ".txt";
-        this.dataNameForDependent = "./src/main/java/org/openjfx/Database/"
-                + databaseNameDependent + ".txt";
-        System.out.println(dataNameForImmigrant);
-        System.out.println(dataNameForDependent);
+        if (databaseNameImmigrant != null) {
+            this.dataNameForImmigrant = "./src/main/java/org/openjfx/Database/"
+                    + databaseNameImmigrant
+                    + ".txt";
+        }
+        if (databaseNameDependent != null) {
+            this.dataNameForDependent = "./src/main/java/org/openjfx/Database/"
+                    + databaseNameDependent + ".txt";
+        }
         try {
             // Access to the immgrint record and create a temp database array for
             // application.
