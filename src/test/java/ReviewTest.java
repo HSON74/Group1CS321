@@ -54,4 +54,21 @@ public class ReviewTest {
     public static void main(String[] args) {
         ReviewTest review = new ReviewTest();
     }
+
+    @Test
+    void TestFirstName(){
+        assertNotNull(immigrant.getFirstName());
+    }
+    @Test
+    void TestMiddleName(){
+        assertNotNull(immigrant.getMiddleName());
+    }
+    @Test
+    void TestLastName(){
+        assertNotNull(immigrant.getLastName());
+    }
+    @Test
+    void TestAge(){
+        assertTrue(immigrant.getAge()>18);
+    }
 }

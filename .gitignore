@@ -61,3 +61,4 @@ target/classes/org/openjfx/Workflow/Workflow.class
 target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
 target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
 target/classes/org/openjfx/Workflow/DataEntry.class
+target/classes/org/openjfx/Workflow/Database.class
