@@ -37,11 +37,11 @@ public class Approval {
     /* Set the the application scene when the user sumbit the form for approval */
     public void Adisplay(Form form, Workflow system, Stage primaryStage) {
         if (form == null) {
-            System.out.println("Null form");
+            System.err.println("Null form");
             return;
         }
         if (system == null) {
-            System.out.println("Null system");
+            System.err.println("Null system");
             return;
         }
         this.approvalForm = form;
@@ -82,7 +82,6 @@ public class Approval {
         String[] formD = new String[approvalTextsD.length];
 
         if (checkFrom(status)) {
-            System.out.println("Form exist");
             int i = 0;
             formI[i++] = Helper.nullStringCheck(form.getImmigrant().getFirstName());
             formI[i++] = Helper.nullStringCheck(form.getImmigrant().getMiddleName());
@@ -124,6 +123,7 @@ public class Approval {
             formD[i++] = Helper.BooleantoYN(form.getDependent().getPrevClaim());
             formD[i++] = String.valueOf(form.getDependent().getDependentPid());
         } else {
+            System.err.println("Form don't exist create a temporarity form");
             int i = 0;
             formI[i++] = "My First Name";
             formI[i++] = "My Middle Name";
@@ -260,7 +260,7 @@ public class Approval {
                 });
         rejectButton.setOnAction(e -> {
             if (isAdd) {
-                setDatabase(null, null, form);
+                setDatabase(null, null);
                 database.removeDependent(form.getImmigrant().getImmigrantPid());
                 database.removeDependent(form.getDependent().getDependentPid());
                 isAdd = false;
@@ -283,7 +283,7 @@ public class Approval {
         this.isAdd = false;
         this.approvalForm = form;
         setApprovalStatus(ApprovalStatus.INPROGRESS);
-        setDatabase(databaseI, databaseD, form);
+        setDatabase(databaseI, databaseD);
 
     }
 
@@ -291,7 +291,7 @@ public class Approval {
         this.isAdd = false;
         this.approvalForm = form;
         setApprovalStatus(ApprovalStatus.INPROGRESS);
-        setDatabase(null, null, form);
+        setDatabase(null, null);
 
     }
 
@@ -299,7 +299,7 @@ public class Approval {
         this.isAdd = false;
         this.approvalForm = form;
         setApprovalStatus(ApprovalStatus.INPROGRESS);
-        setDatabase(dataBase, null, form);
+        setDatabase(dataBase, null);
 
     }
 
@@ -313,14 +313,8 @@ public class Approval {
             System.err.println("The immigrant or dependent form ");
             return false;
         }
-        if (fullCheck(status)) {
-            int iPid = approvalForm.getImmigrant().getImmigrantPid();
-            int dPid = approvalForm.getDependent().getDependentPid();
-            System.out.println(database.checkData(iPid, dPid));
-            return true;
-        } else {
-            return false;
-        }
+        return fullCheck(status);
+
     }
 
     /*
@@ -348,7 +342,7 @@ public class Approval {
             missing = "Form is null";
             return false;
         }
-        if (approvalForm.getFormStatus() != FormStatus.COMPLETE) {
+        if (approvalForm.getFormStatus() == FormStatus.COMPLETE) {
             missing = "Form is not complete";
             return false;
         }
@@ -478,6 +472,7 @@ public class Approval {
             }
         }
         missing = missingImmigrant + missingDependent;
+        System.out.println(missing);
         return (missingImmigrant.equalsIgnoreCase("") || missingDependent.equalsIgnoreCase(""));
     }
 
@@ -496,9 +491,9 @@ public class Approval {
         return approvalForm;
     }
 
-    protected void setDatabase(String dataBaseI, String dataBaseS, Form form) {
+    protected void setDatabase(String dataBaseI, String dataBaseS) {
         System.out.println("System connect to database");
-        this.database = new Database(form, dataBaseI, dataBaseS);
+        this.database = new Database(dataBaseI, dataBaseS);
     }
 
     protected Database getDatabase() {

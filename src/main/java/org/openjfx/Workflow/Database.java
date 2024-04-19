@@ -34,7 +34,7 @@ public class Database {
      * Inital the table by create a table or access
      * the table if the table exist.
      */
-    public Database(Form form, String databaseNameImmigrant, String databaseNameDependent) {
+    public Database(String databaseNameImmigrant, String databaseNameDependent) {
         if (databaseNameImmigrant == null && databaseFormsImmigrant == null) {
             databaseNameImmigrant = "Immigrant";
         }
@@ -64,7 +64,6 @@ public class Database {
                     this.databaseFormsImmigrant.add(tempImmigrantForm);
                 }
                 scr.close();
-                System.err.println("File Exist");
             } else {
                 datafile.createNewFile();
                 BufferedWriter writer = new BufferedWriter(new FileWriter(datafile));
@@ -85,18 +84,15 @@ public class Database {
                     databaseFormsDependent.add(tempDependentForm);
                 }
                 dscr.close();
-                System.err.println("File Exist");
             } else {
                 datafiled.createNewFile();
                 BufferedWriter dwriter = new BufferedWriter(new FileWriter(datafiled));
-                // writer.write("1");
                 dscr = new Scanner(datafiled);
                 System.err.println("File Exist not exist");
                 dwriter.close();
             }
 
         } catch (Exception e) {
-            // TODO: handle exception
             System.err.println(e.toString());
         }
 
@@ -109,16 +105,14 @@ public class Database {
     public boolean addData(Form form) {
 
         if (form == null) {
-            System.out.println("Problem 1");
+            System.err.println("Error no form is pass in.");
             return false;
         }
         if (form.getImmigrant() == null || form.getDependent() == null) {
-            System.out.println("Problem 2");
+            System.err.println("Error form is pass in. Have not Immigrant or Dependent Information");
             return false;
         }
-        boolean addDatatoFile = saveData(form);
-        // System.out.println("add to system");
-        return addDatatoFile;
+        return saveData(form);
     }
 
     // Check the data are in system.
@@ -266,39 +260,39 @@ public class Database {
      * immigrant using the integer variable social security number, which
      * is immigrant social security number.
      */
-    private Immigrant getDataImmigrantSSN(int sSNumber) {
-        if (databaseFormsImmigrant == null) {
-            return null;
-        }
-        for (int i = 0; i < databaseFormsImmigrant.size(); i++) {
-            if (databaseFormsImmigrant.get(i).getSSNumber() == sSNumber) {
-                return databaseFormsImmigrant.get(i);
-            }
-        }
-        return null;
-    }
+    // private Immigrant getDataImmigrantSSN(int sSNumber) {
+    // if (databaseFormsImmigrant == null) {
+    // return null;
+    // }
+    // for (int i = 0; i < databaseFormsImmigrant.size(); i++) {
+    // if (databaseFormsImmigrant.get(i).getSSNumber() == sSNumber) {
+    // return databaseFormsImmigrant.get(i);
+    // }
+    // }
+    // return null;
+    // }
 
     /*
      * The method will search the the Database froms for
      * Dependent using the integer variable social security number, which
      * is Dependent social security number.
      */
-    private Dependent getDataDependentSSN(int sSNumber) {
-        if (databaseFormsDependent == null) {
-            return null;
-        }
-        for (int i = 0; i < databaseFormsDependent.size(); i++) {
-            if (databaseFormsDependent.get(i).getSSNumber() == sSNumber) {
-                return databaseFormsDependent.get(i);
-            }
-        }
-        return null;
-    }
+    // private Dependent getDataDependentSSN(int sSNumber) {
+    // if (databaseFormsDependent == null) {
+    // return null;
+    // }
+    // for (int i = 0; i < databaseFormsDependent.size(); i++) {
+    // if (databaseFormsDependent.get(i).getSSNumber() == sSNumber) {
+    // return databaseFormsDependent.get(i);
+    // }
+    // }
+    // return null;
+    // }
 
     /*
      * A method that save if the form information don't exist in the system.
      */
-    private boolean saveData(Form inputForm) {
+    protected boolean saveData(Form inputForm) {
         if (inputForm.getDependent() == null || inputForm.getImmigrant() == null) {
             return false;
         }
@@ -383,9 +377,9 @@ public class Database {
      * A method for remove or update immigrant information to
      * the system application record (SAR).
      */
-    private void updateLine(String lineChange, String DatabaseFile, int changeline, char command) {
+    private void updateLine(String lineChange, String databaseFile, int changeline, char command) {
         String tempFileString = "./src/main/java/org/openjfx/Database/temp.txt";
-        File oldFile = new File(DatabaseFile);
+        File oldFile = new File(databaseFile);
         File newFile = new File(tempFileString);
         int line = 0;
         String currentLine;
@@ -394,7 +388,7 @@ public class Database {
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter pw = new PrintWriter(bw);
 
-            FileReader fr = new FileReader(DatabaseFile);
+            FileReader fr = new FileReader(databaseFile);
             BufferedReader br = new BufferedReader(fr);
 
             while ((currentLine = br.readLine()) != null) {
@@ -417,9 +411,10 @@ public class Database {
             br.close();
             bw.close();
             fw.close();
-
-            oldFile.delete();
-            File dump = new File(DatabaseFile);
+            if (!oldFile.delete()) {
+                System.err.println(databaseFile + " don't exist");
+            }
+            File dump = new File(databaseFile);
             newFile.renameTo(dump);
 
         } catch (Exception e) {
@@ -475,88 +470,70 @@ public class Database {
     private Immigrant setRecordtoImmigrant(String record) {
         Immigrant myImmigrant = new Immigrant();
         int i = 0;
-        String StringArray[] = record.split("/", 0);
-        // System.err.println("Problem 1 in Immigrant");
-        myImmigrant.setFirstName(Helper.nullStringNull(StringArray[i++]));
-        // System.err.println("Problem 2 in Immigrant");
-        myImmigrant.setMiddleName(Helper.nullStringNull(StringArray[i++]));
-        // System.err.println("Problem 3 in Immigrant");
-        myImmigrant.setLastName(Helper.nullStringNull(StringArray[i++]));
-        // System.err.println("Problem 4 in Immigrant");
-        myImmigrant.setAge(Integer.parseInt(StringArray[i++]));
-        // System.err.println("Problem 5 in Immigrant");
-        myImmigrant.setBirthMonth(Integer.parseInt(StringArray[i++]));
-        // System.err.println("Problem 6 in Immigrant");
-        myImmigrant.setBirthDay(Integer.parseInt(StringArray[i++]));
-        // System.err.println("Problem 7 in Immigrant");
-        myImmigrant.setBirthYear(Integer.parseInt(StringArray[i++]));
-        // System.err.println("Problem 8 in Immigrant");
-        myImmigrant.setAddress(Helper.nullStringNull(StringArray[i++]));
-        // System.err.println("Problem 9 in Immigrant");
-        myImmigrant.setSSNumber(Integer.parseInt(StringArray[i++]));
-        // System.err.println("Problem 10 in Immigrant");
-        myImmigrant.setRace(Helper.nullStringNull(StringArray[i++]));
-        // System.err.println("Problem 11 in Immigrant");
-        myImmigrant.setGender(Helper.nullStringNull(StringArray[i++]));
-        // System.err.println("Problem 12 in Immigrant");
-        myImmigrant.setMarried(Helper.yntoBoolean(StringArray[i++]));
-        // System.err.println("Problem 12 in Immigrant");
-        myImmigrant.setPhoneNumber(Helper.nullStringNull(StringArray[i++]));
-        // System.err.println("Problem 13 in Immigrant");
-        myImmigrant.setFather(Helper.nullStringNull(StringArray[i++]));
-        // System.err.println("Problem 14 in Immigrant");
-        myImmigrant.setMother(Helper.nullStringNull(StringArray[i++]));
-        // System.err.println("Problem 15 in Immigrant");
-        myImmigrant.setemploymentStatus(Helper.yntoBoolean(StringArray[i++]));
-        // System.err.println("Problem 16 in Immigrant");
-        myImmigrant.setImmigrantPid(Integer.parseInt(StringArray[i++]));
-        // System.err.println("Problem 17 in Immigrant");
-        myImmigrant.setDependentPid(Integer.parseInt(StringArray[i++]));
-        // System.err.println("Problem result in Immigrant");
+        String stringArray[] = record.split("/", 0);
+        myImmigrant.setFirstName(Helper.nullStringNull(stringArray[i++]));
+        myImmigrant.setMiddleName(Helper.nullStringNull(stringArray[i++]));
+        myImmigrant.setLastName(Helper.nullStringNull(stringArray[i++]));
+
+        myImmigrant.setAge(Integer.parseInt(stringArray[i++]));
+
+        myImmigrant.setBirthMonth(Integer.parseInt(stringArray[i++]));
+
+        myImmigrant.setBirthDay(Integer.parseInt(stringArray[i++]));
+
+        myImmigrant.setBirthYear(Integer.parseInt(stringArray[i++]));
+
+        myImmigrant.setAddress(Helper.nullStringNull(stringArray[i++]));
+
+        myImmigrant.setSSNumber(Integer.parseInt(stringArray[i++]));
+
+        myImmigrant.setRace(Helper.nullStringNull(stringArray[i++]));
+
+        myImmigrant.setGender(Helper.nullStringNull(stringArray[i++]));
+
+        myImmigrant.setMarried(Helper.yntoBoolean(stringArray[i++]));
+
+        myImmigrant.setPhoneNumber(Helper.nullStringNull(stringArray[i++]));
+
+        myImmigrant.setFather(Helper.nullStringNull(stringArray[i++]));
+
+        myImmigrant.setMother(Helper.nullStringNull(stringArray[i++]));
+        myImmigrant.setemploymentStatus(Helper.yntoBoolean(stringArray[i++]));
+        myImmigrant.setImmigrantPid(Integer.parseInt(stringArray[i++]));
+        myImmigrant.setDependentPid(Integer.parseInt(stringArray[i++]));
         return myImmigrant;
     }
 
     private Dependent setRecordtoDependent(String record) {
         Dependent myDependent = new Dependent();
         int i = 0;
-        String StringArray[] = record.split("/", 0);
-        // System.err.println("Problem 1 in Dependent");
-        myDependent.setFirstName(Helper.nullStringNull(StringArray[i++]));
-        // System.err.println("Problem 2 in Dependent");
-        myDependent.setMiddleName(Helper.nullStringNull(StringArray[i++]));
-        // System.err.println("Problem 3 in Dependent");
-        myDependent.setLastName(Helper.nullStringNull(StringArray[i++]));
-        // System.err.println("Problem 4 in Dependent");
-        myDependent.setAge(Integer.parseInt(StringArray[i++]));
-        // System.err.println("Problem 5 in Dependent");
-        myDependent.setBirthMonth(Integer.parseInt(StringArray[i++]));
-        // System.err.println("Problem 6 in Dependent");
-        myDependent.setBirthDay(Integer.parseInt(StringArray[i++]));
-        // System.err.println("Problem 7 in Dependent");
-        myDependent.setBirthYear(Integer.parseInt(StringArray[i++]));
-        // System.err.println("Problem 8 in Dependent");
-        myDependent.setAddress(Helper.nullStringNull(StringArray[i++]));
-        // System.err.println("Problem 8 in Dependent");
-        myDependent.setSSNumber(Integer.parseInt(StringArray[i++]));
-        // System.err.println("Problem 9 in Dependent");
-        myDependent.setRace(Helper.nullStringNull(StringArray[i++]));
-        // System.err.println("Problem 10 in Dependent");
-        myDependent.setGender(Helper.nullStringNull(StringArray[i++]));
-        // System.err.println("Problem 11 in Dependent");
-        myDependent.setMarried(Helper.yntoBoolean(StringArray[i++]));
-        // System.err.println("Problem 12 in Dependent");
-        myDependent.setPhoneNumber(Helper.nullStringNull(StringArray[i++]));
-        // System.err.println("Problem 13 in Dependent");
-        myDependent.setFather(Helper.nullStringNull(StringArray[i++]));
-        // System.err.println("Problem 14 in Dependent");
-        myDependent.setMother(Helper.nullStringNull(StringArray[i++]));
-        // System.err.println("Problem 15 in Dependent");
-        myDependent.setemploymentStatus(Helper.yntoBoolean(StringArray[i++]));
-        // System.err.println("Problem 16 in Dependent");
-        myDependent.setPrevClaim(Helper.yntoBoolean(StringArray[i++]));
-        // System.err.println("Problem 17 in Dependent");
-        myDependent.setDependentPid(Integer.parseInt(StringArray[i++]));
-        // System.err.println("Problem resutl in Dependent");
+        String stringArray[] = record.split("/", 0);
+        myDependent.setFirstName(Helper.nullStringNull(stringArray[i++]));
+        myDependent.setMiddleName(Helper.nullStringNull(stringArray[i++]));
+        myDependent.setLastName(Helper.nullStringNull(stringArray[i++]));
+        myDependent.setAge(Integer.parseInt(stringArray[i++]));
+        myDependent.setBirthMonth(Integer.parseInt(stringArray[i++]));
+        myDependent.setBirthDay(Integer.parseInt(stringArray[i++]));
+        myDependent.setBirthYear(Integer.parseInt(stringArray[i++]));
+        myDependent.setAddress(Helper.nullStringNull(stringArray[i++]));
+        myDependent.setSSNumber(Integer.parseInt(stringArray[i++]));
+        myDependent.setRace(Helper.nullStringNull(stringArray[i++]));
+        myDependent.setGender(Helper.nullStringNull(stringArray[i++]));
+
+        myDependent.setMarried(Helper.yntoBoolean(stringArray[i++]));
+
+        myDependent.setPhoneNumber(Helper.nullStringNull(stringArray[i++]));
+
+        myDependent.setFather(Helper.nullStringNull(stringArray[i++]));
+
+        myDependent.setMother(Helper.nullStringNull(stringArray[i++]));
+
+        myDependent.setemploymentStatus(Helper.yntoBoolean(stringArray[i++]));
+
+        myDependent.setPrevClaim(Helper.yntoBoolean(stringArray[i++]));
+
+        myDependent.setDependentPid(Integer.parseInt(stringArray[i++]));
+
         return myDependent;
     }
 
