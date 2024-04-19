@@ -260,7 +260,7 @@ public class Approval {
                 });
         rejectButton.setOnAction(e -> {
             if (isAdd) {
-                setDatabase(null, null);
+                setDatabase("ImmigrantRecord", "DependentRecord");
                 database.removeDependent(form.getImmigrant().getImmigrantPid());
                 database.removeDependent(form.getDependent().getDependentPid());
                 isAdd = false;
