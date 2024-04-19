@@ -35,7 +35,7 @@ public class Approval {
     protected Scene rejectScene;
 
     /* Set the the application scene when the user sumbit the form for approval */
-    public void Adisplay(Form form, Workflow system, Stage primaryStage) {
+    public void aDisplay(Form form, Workflow system, Stage primaryStage) {
         if (form == null) {
             System.err.println("Null form");
             return;

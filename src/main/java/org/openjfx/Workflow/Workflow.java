@@ -41,7 +41,7 @@ public class Workflow {
         workflowDataEntry = new DataEntry(this);
         workflowDataEntry.startProcess();
         workflowReview = new Review();
-        workflowApproval = new Approval(null, workflowDataEntry.systemForm);
+        workflowApproval = new Approval("ImmigrantRecord", "DependentRecord", workflowDataEntry.systemForm);
         wfItems = new HashMap<>();
     }
 

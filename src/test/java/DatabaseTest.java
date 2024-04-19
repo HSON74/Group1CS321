@@ -28,6 +28,7 @@ public class DatabaseTest {
         approvalImmigrant.setMarried(false);
         approvalImmigrant.setemploymentStatus(false);
         approvalImmigrant.setSSNumber(1013931242);
+        approvalImmigrant.setPhoneNumber("Hello Hello Hello");
         approvalImmigrant.setGender("Male");
         approvalImmigrant.setRace("Asian");
         approvalImmigrant.setFather("Your Father");
@@ -36,33 +37,35 @@ public class DatabaseTest {
         approvalImmigrant.setDependentPid(7);
 
         assertNotNull(myForm, "Form is null");
-        Dependent approvaDependent = new Dependent();
-        approvaDependent.setFirstName("Moe");
-        approvaDependent.setMiddleName("");
-        approvaDependent.setLastName("Thomspon");
-        approvaDependent.setAge(25);
-        approvaDependent.setAddress("4400 Elm Street");
-        approvaDependent.setBirthMonth(06);
-        approvaDependent.setBirthDay(3);
-        approvaDependent.setBirthYear(1992);
-        approvaDependent.setMarried(false);
-        approvaDependent.setemploymentStatus(false);
-        approvaDependent.setSSNumber(1013931243);
-        approvaDependent.setGender("Male");
-        approvaDependent.setRace("Asian");
-        approvaDependent.setFather("Your Father");
-        approvaDependent.setMother("Your Mother");
-        approvaDependent.setImmigrantPid(4);
-        approvaDependent.setDependentPid(7);
-        assertNotNull(approvaDependent, "The Dependent Form is null");
+        Dependent approvalDependent = new Dependent();
+        approvalDependent.setFirstName("Moe");
+        approvalDependent.setMiddleName("");
+        approvalDependent.setLastName("Thomspon");
+        approvalDependent.setAge(25);
+        approvalDependent.setAddress("4400 Elm Street");
+        approvalDependent.setBirthMonth(06);
+        approvalDependent.setBirthDay(3);
+        approvalDependent.setBirthYear(1992);
+        approvalDependent.setMarried(false);
+        approvalDependent.setemploymentStatus(false);
+        approvalDependent.setPhoneNumber("Hello Hello Hello");
+        approvalDependent.setSSNumber(1013931243);
+        approvalDependent.setGender("Male");
+        approvalDependent.setRace("Asian");
+        approvalDependent.setFather("Your Father");
+        approvalDependent.setMother("Your Mother");
+        approvalDependent.setImmigrantPid(4);
+        approvalDependent.setDependentPid(7);
+        assertNotNull(approvalDependent, "The Dependent Form is null");
         myForm.setImmigrant(approvalImmigrant);
-        myForm.setDependent(approvaDependent);
+        myForm.setDependent(approvalDependent);
         myDatabase = new Database("DatabaseTestRecordForImmigrant", "DatabaseTestRecordForDepenedent");
     }
 
     @Test
     void databaseTestCase1() {
         // addData(Form form)
+
     }
 
     @Test

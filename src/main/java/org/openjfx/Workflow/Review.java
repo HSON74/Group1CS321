@@ -38,7 +38,8 @@ public class Review {
         this.form = reviewWorkflow.generateForm(form.getFields());
         // This checks if the form status is complete or not
         if (form.getFormStatus() != FormStatus.COMPLETE) {
-            // If not, then the application will display an error message based on the status
+            // If not, then the application will display an error message based on the
+            // status
             Stage window = new Stage();
             window.initModality(Modality.APPLICATION_MODAL);
             window.setTitle("Error Message:");
@@ -54,8 +55,7 @@ public class Review {
                 label.setText("Error! Some fields have not been fully filled out!");
                 window.setMinWidth(400);
                 window.setMinHeight(200);
-            } 
-            else if (form.getFormStatus() == FormStatus.ERROR) {
+            } else if (form.getFormStatus() == FormStatus.ERROR) {
                 label.setText("Error! Data contains incorrect format!");
                 window.setMinWidth(250);
                 window.setMinHeight(200);
@@ -71,7 +71,7 @@ public class Review {
             window.setScene(scene);
             window.show();
             // The form gets returned to data entry
-            button.setOnAction(e->window.close());
+            button.setOnAction(e -> window.close());
         }
     }
 
@@ -87,41 +87,49 @@ public class Review {
         Text description = new Text("Please Review the Form Data of Immigrant and Dependent Before Revalidation");
         description.setFont(Font.font("seirf", FontWeight.NORMAL, FontPosture.REGULAR, 15));
         Text immiName = new Text();
-        if (immigrant.getMiddleName() == null) immiName.setText("Name: " + immigrant.getFirstName() + " " + immigrant.getLastName());
-        else immiName.setText("Name: " + immigrant.getFirstName() + " " + immigrant.getMiddleName() + " " + immigrant.getLastName());
+        if (immigrant.getMiddleName() == null)
+            immiName.setText("Name: " + immigrant.getFirstName() + " " + immigrant.getLastName());
+        else
+            immiName.setText("Name: " + immigrant.getFirstName() + " " + immigrant.getMiddleName() + " "
+                    + immigrant.getLastName());
         Text[] immigrantTexts = {
-            new Text("Immigrant Form"),
-            immiName, 
-            new Text("Age: " + immigrant.getAge()), 
-            new Text("Birthday: " + immigrant.getbirthMonth() + "/" + immigrant.getbirthDay() + "/" + immigrant.getbirthYear()),
-            new Text("Address: " + immigrant.getAddress()),
-            new Text("Social Security Number: " + immigrant.getSSNumber()), 
-            new Text("Race: " + immigrant.getRace()), 
-            new Text("Gender: " + immigrant.getGender()), 
-            new Text("Marriage Status: " + immigrant.getMarriedStatus()),
-            new Text("Phone Number: " + immigrant.getPhoneNumber()), 
-            new Text("Father: " + immigrant.getFatherName()), 
-            new Text("Mother: " + immigrant.getMotherName()),
-            new Text("Occupation: " + immigrant.getemploymentStatus())
+                new Text("Immigrant Form"),
+                immiName,
+                new Text("Age: " + immigrant.getAge()),
+                new Text("Birthday: " + immigrant.getbirthMonth() + "/" + immigrant.getbirthDay() + "/"
+                        + immigrant.getbirthYear()),
+                new Text("Address: " + immigrant.getAddress()),
+                new Text("Social Security Number: " + immigrant.getSSNumber()),
+                new Text("Race: " + immigrant.getRace()),
+                new Text("Gender: " + immigrant.getGender()),
+                new Text("Marriage Status: " + immigrant.getMarriedStatus()),
+                new Text("Phone Number: " + immigrant.getPhoneNumber()),
+                new Text("Father: " + immigrant.getFatherName()),
+                new Text("Mother: " + immigrant.getMotherName()),
+                new Text("Occupation: " + immigrant.getemploymentStatus())
         };
         // Dependent Name
         Text depName = new Text();
-        if (dependent.getMiddleName() == null) depName.setText("Name: " + dependent.getFirstName() + " " + dependent.getLastName());
-        else depName.setText("Name: " + dependent.getFirstName() + " " + dependent.getMiddleName() + " " + dependent.getLastName());
+        if (dependent.getMiddleName() == null)
+            depName.setText("Name: " + dependent.getFirstName() + " " + dependent.getLastName());
+        else
+            depName.setText("Name: " + dependent.getFirstName() + " " + dependent.getMiddleName() + " "
+                    + dependent.getLastName());
         Text[] dependentTexts = {
-            new Text("Dependent Form"),
-            depName, 
-            new Text("Age: " + dependent.getAge()), 
-            new Text("Birthday: " + dependent.getbirthMonth() + "/" + dependent.getbirthDay() + "/" + dependent.getbirthYear()),
-            new Text("Address: " + dependent.getAddress()),
-            new Text("Social Security Number: " + dependent.getSSNumber()), 
-            new Text("Race: " + dependent.getRace()), 
-            new Text("Gender: " + dependent.getGender()), 
-            new Text("Marriage Status: " + dependent.getMarriedStatus()),
-            new Text("Phone Number: " + dependent.getPhoneNumber()), 
-            new Text("Father: " + dependent.getFatherName()), 
-            new Text("Mother: " + dependent.getMotherName()),
-            new Text("Occupation: " + dependent.getemploymentStatus())
+                new Text("Dependent Form"),
+                depName,
+                new Text("Age: " + dependent.getAge()),
+                new Text("Birthday: " + dependent.getbirthMonth() + "/" + dependent.getbirthDay() + "/"
+                        + dependent.getbirthYear()),
+                new Text("Address: " + dependent.getAddress()),
+                new Text("Social Security Number: " + dependent.getSSNumber()),
+                new Text("Race: " + dependent.getRace()),
+                new Text("Gender: " + dependent.getGender()),
+                new Text("Marriage Status: " + dependent.getMarriedStatus()),
+                new Text("Phone Number: " + dependent.getPhoneNumber()),
+                new Text("Father: " + dependent.getFatherName()),
+                new Text("Mother: " + dependent.getMotherName()),
+                new Text("Occupation: " + dependent.getemploymentStatus())
         };
         Text conf = new Text("Press Submit to submit the form if everything is correct");
         conf.setFont(Font.font("seirf", FontWeight.NORMAL, FontPosture.REGULAR, 15));
@@ -139,20 +147,22 @@ public class Review {
         grid.add(dependentTexts[0], 1, 2);
         for (int i = 1; i < immigrantTexts.length; i++) {
             immigrantTexts[i].setFont(Font.font("seirf", FontWeight.NORMAL, FontPosture.REGULAR, 10));
-            grid.add(immigrantTexts[i],0,i+2);
+            grid.add(immigrantTexts[i], 0, i + 2);
             dependentTexts[i].setFont(Font.font("seirf", FontWeight.NORMAL, FontPosture.REGULAR, 10));
-            grid.add(dependentTexts[i],1,i+2);
+            grid.add(dependentTexts[i], 1, i + 2);
         }
         grid.add(conf, 0, 15);
-        // This button is for when the user finishes reviewing the form and wants to submit for revalidation
+        // This button is for when the user finishes reviewing the form and wants to
+        // submit for revalidation
         Button button = new Button("OK");
         button.setOnAction(e -> {
             // If the form is complete, then the form gets sent to the approval stage
-            reviewWorkflow.getApproval().Adisplay(file, reviewWorkflow, primaryStage);
+            reviewWorkflow.getApproval().aDisplay(file, reviewWorkflow, primaryStage);
             primaryStage.setScene(reviewWorkflow.getApproval().approvalScene);
         });
         grid.add(button, 1, 17);
-        // This button is for when the user wishes to go back to the data entry screen to edit the form data
+        // This button is for when the user wishes to go back to the data entry screen
+        // to edit the form data
         Button back = new Button("Back");
         back.setOnAction(e -> {
             reviewWorkflow.returnForm(file);
@@ -160,7 +170,7 @@ public class Review {
             primaryStage.setScene(reviewWorkflow.getDataEntry().dataEntryScene);
         });
         grid.add(back, 0, 17);
-        Scene scene = new Scene(grid, 960,540);
+        Scene scene = new Scene(grid, 960, 540);
         scene.getRoot().setStyle("-fx-font-family: 'serif'");
         setScene(scene);
         reviewWorkflow.addScene(scene);
