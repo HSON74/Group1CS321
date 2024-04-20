@@ -301,7 +301,7 @@ public class Database {
         String status = checkData(iForm.getImmigrantPid(), dForm.getDependentPid());
 
         if (status.equalsIgnoreCase("both is not system")) {
-            dForm.setPrevClaim(dForm.getPrevClaim());
+            dForm.setPrevClaim(true);
             iForm.setImmigrantPid(dForm.getDependentPid());
             addImmigrantToData(iForm);
             addDependentToData(dForm);
@@ -309,19 +309,21 @@ public class Database {
             if ((dForm = getDataDependent(dForm.getDependentPid())) != null
                     && (iForm = getDataImmigrant(dForm.getImmigrantPid())) != null) {
                 Dependent tempDform = getDataDependent(dForm.getDependentPid());
-                if (tempDform.getPrevClaim()) {
+                if (tempDform.getPrevClaim() && !dForm.getPrevClaim()) {
                     return false;
                 }
+                dForm.setPrevClaim(true);
+                iForm.setImmigrantPid(dForm.getDependentPid());
                 updateImmigrant(iForm);
                 updateDependent(dForm);
             }
         } else if (status.equalsIgnoreCase("Immigrant is not system")) {
             Dependent tempDform = getDataDependent(dForm.getDependentPid());
             if (tempDform != null) {
-                if (tempDform.getPrevClaim()) {
+                if (tempDform.getPrevClaim() && !dForm.getPrevClaim()) {
                     return false;
                 }
-                dForm.setPrevClaim(dForm.getPrevClaim());
+                dForm.setPrevClaim(true);
                 iForm.setImmigrantPid(dForm.getDependentPid());
                 addImmigrantToData(iForm);
                 updateDependent(dForm);

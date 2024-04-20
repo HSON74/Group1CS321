@@ -2,10 +2,10 @@ package org.openjfx.Workflow;
 
 public class Helper {
     public static int checkAge(int i) {
-        if ((i > 0)&&(i <= 100)) {
+        if ((i > 0) && (i <= 100)) {
             return i;
-        }
-        else return 0;
+        } else
+            return 0;
     }
 
     public static String intToMonth(int i) {
@@ -192,7 +192,8 @@ public class Helper {
     }
 
     public static String nullStringNullString(String myString) {
-        if (myString == null || myString.equalsIgnoreCase("null") || myString.equalsIgnoreCase("N/A")) {
+        if (myString == null || myString.equalsIgnoreCase("null") || myString.equalsIgnoreCase("N/A")
+                || myString.equalsIgnoreCase("")) {
             return "null";
         } else {
             return myString;
@@ -202,19 +203,22 @@ public class Helper {
     public static String nullStringNull(String myString) {
         if (myString.equals("")) {
             return null;
-        }
-        else {
+        } else {
             return myString;
         }
     }
 
     public static int ssNumberCheck(int i) {
-        if ((i >= 100000000)&&(i < 1000000000)) return i;
-        else return 0;
+        if ((i >= 100000000) && (i < 1000000000))
+            return i;
+        else
+            return 0;
     }
 
     public static String phoneNumberCheck(String line) {
-        if (line.length() == 10) return line;
-        else return null;
+        if (line.length() == 10)
+            return line;
+        else
+            return null;
     }
 }

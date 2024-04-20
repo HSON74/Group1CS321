@@ -342,10 +342,6 @@ public class Approval {
             missing = "Form is null";
             return false;
         }
-        if (approvalForm.getFormStatus() == FormStatus.COMPLETE) {
-            missing = "Form is not complete";
-            return false;
-        }
         if (approvalForm.getImmigrant() == null && approvalForm.getDependent() == null) {
             missing = "Form is don't have Immigrant and Dependent information.";
             return false;
@@ -414,57 +410,81 @@ public class Approval {
         }
         String missingDependent = "";
         if (approvalForm.getDependent() != null) {
-            if (!missingImmigrant.equalsIgnoreCase("")) {
-                missingDependent = "; and ";
-            }
             if (approvalForm.getDependent().getFirstName() == null) {
                 if (missingDependent.equalsIgnoreCase("")) {
+                    if (!missingImmigrant.equalsIgnoreCase("")) {
+                        missingDependent = "; and ";
+                    }
                     missingDependent = "Dependent Field: First Name";
                 }
             } else if (approvalForm.getDependent().getLastName() == null) {
                 if (missingDependent.equalsIgnoreCase("")) {
+                    if (!missingImmigrant.equalsIgnoreCase("")) {
+                        missingDependent = "; and ";
+                    }
                     missingDependent = "Dependent Field: Last Name";
                 } else {
                     missingDependent = ", Last Name";
                 }
             } else if (approvalForm.getDependent().getAge() <= 0) {
                 if (missingDependent.equalsIgnoreCase("")) {
+                    if (!missingImmigrant.equalsIgnoreCase("")) {
+                        missingDependent = "; and ";
+                    }
                     missingDependent = "Dependent Field: Age";
                 } else {
                     missingDependent = ", Age";
                 }
             } else if (approvalForm.getDependent().getAddress() == null) {
                 if (missing.equalsIgnoreCase("")) {
+                    if (!missingImmigrant.equalsIgnoreCase("")) {
+                        missingDependent = "; and ";
+                    }
                     missingDependent = "Dependent Field: Address";
                 } else {
                     missingDependent = ", Address";
                 }
             } else if (approvalForm.getDependent().getSSNumber() < 0) {
                 if (missingDependent.equalsIgnoreCase("")) {
+                    if (!missingImmigrant.equalsIgnoreCase("")) {
+                        missingDependent = "; and ";
+                    }
                     missingDependent = "Dependent Field: Social Security Number";
                 } else {
                     missingDependent = ", Social Security Number";
                 }
             } else if (approvalForm.getDependent().getRace() == null) {
                 if (missingDependent.equalsIgnoreCase("")) {
+                    if (!missingImmigrant.equalsIgnoreCase("")) {
+                        missingDependent = "; and ";
+                    }
                     missingDependent = "Dependent Field: Race";
                 } else {
                     missingDependent = ", Race";
                 }
             } else if (approvalForm.getDependent().getGender() == null) {
                 if (missing.equalsIgnoreCase("")) {
+                    if (!missingImmigrant.equalsIgnoreCase("")) {
+                        missingDependent = "; and ";
+                    }
                     missing = "Dependent Field: Gender";
                 } else {
                     missing = ", Gender";
                 }
             } else if (approvalForm.getDependent().getPhoneNumber() == null) {
                 if (missingDependent.equalsIgnoreCase("")) {
+                    if (!missingImmigrant.equalsIgnoreCase("")) {
+                        missingDependent = "; and ";
+                    }
                     missingDependent = "Dependent Field: Phone Number";
                 } else {
                     missingDependent = ", Phone Number";
                 }
             } else if (approvalForm.getDependent().getDependentPid() <= 0) {
                 if (missingDependent.equalsIgnoreCase("")) {
+                    if (!missingImmigrant.equalsIgnoreCase("")) {
+                        missingDependent = "; and ";
+                    }
                     missingDependent = "Dependent Field: Dependent PID";
                 } else {
                     missingDependent = ", Dependent PID";
