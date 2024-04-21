@@ -35,30 +35,27 @@ public class Database {
      * the table if the table exist.
      */
     public Database(String databaseNameImmigrant, String databaseNameDependent) {
-        if (databaseNameImmigrant == null && databaseFormsImmigrant == null) {
+        if (databaseNameImmigrant == null) {
             databaseNameImmigrant = "Immigrant";
         }
-        if (databaseNameDependent == null && dataNameForDependent == null) {
+        if (databaseNameDependent == null) {
             databaseNameDependent = "Dependent";
         }
-        if (databaseNameImmigrant != null) {
-            this.dataNameForImmigrant = "./src/main/java/org/openjfx/Database/"
-                    + databaseNameImmigrant
-                    + ".txt";
-        }
-        if (databaseNameDependent != null) {
-            this.dataNameForDependent = "./src/main/java/org/openjfx/Database/"
-                    + databaseNameDependent + ".txt";
-        }
+        this.dataNameForImmigrant = "./src/main/java/org/openjfx/Database/"
+                + databaseNameImmigrant
+                + ".txt";
+
+        this.dataNameForDependent = "./src/main/java/org/openjfx/Database/"
+                + databaseNameDependent + ".txt";
         try {
             // Access to the immgrint record and create a temp database array for
             // application.
-            File datafile = new File(dataNameForImmigrant);
+            File datafile = new File(this.dataNameForImmigrant);
             Scanner scr;
             this.databaseFormsImmigrant = new ArrayList<Immigrant>();
             if (datafile.exists()) {
                 scr = new Scanner(datafile);
-                while (scr.hasNextLine()) {
+                while (scr.hasNext()) {
                     String mystring = scr.nextLine();
                     Immigrant tempImmigrantForm = setRecordtoImmigrant(mystring);
                     this.databaseFormsImmigrant.add(tempImmigrantForm);
@@ -73,15 +70,14 @@ public class Database {
             // Access to the dependent record and create a temp database array for
             // application.
             Scanner dscr;
-            File datafiled = new File(dataNameForDependent);
+            File datafiled = new File(this.dataNameForDependent);
             this.databaseFormsDependent = new ArrayList<Dependent>();
             if (datafiled.exists()) {
                 dscr = new Scanner(datafiled);
-
-                while (dscr.hasNextLine()) {
+                while (dscr.hasNext()) {
                     String mystring = dscr.nextLine();
                     Dependent tempDependentForm = setRecordtoDependent(mystring);
-                    databaseFormsDependent.add(tempDependentForm);
+                    this.databaseFormsDependent.add(tempDependentForm);
                 }
                 dscr.close();
             } else {
@@ -137,15 +133,17 @@ public class Database {
      * is immigrant Pid.
      */
     public Immigrant getDataImmigrant(int iPID) {
-        if (databaseFormsImmigrant == null) {
+        if (this.databaseFormsImmigrant == null) {
             return null;
         }
-        for (int i = 0; i < databaseFormsImmigrant.size(); i++) {
-            if (databaseFormsImmigrant.get(i).getImmigrantPid() == iPID) {
-                return databaseFormsImmigrant.get(i);
+        Immigrant result = null;
+        for (int i = 0; i < this.databaseFormsImmigrant.size(); i++) {
+            if (this.databaseFormsImmigrant.get(i).getImmigrantPid() == iPID) {
+                result = this.databaseFormsImmigrant.get(i);
+                break;
             }
         }
-        return null;
+        return result;
     }
 
     /*
@@ -154,15 +152,17 @@ public class Database {
      * is dependent Pid.
      */
     public Dependent getDataDependent(int iPID) {
-        if (databaseFormsDependent == null) {
+        if (this.databaseFormsDependent == null) {
             return null;
         }
-        for (int i = 0; i < databaseFormsDependent.size(); i++) {
-            if (databaseFormsDependent.get(i).getImmigrantPid() == iPID) {
-                return databaseFormsDependent.get(i);
+        Dependent result = null;
+        for (int i = 0; i < this.databaseFormsDependent.size(); i++) {
+            if (this.databaseFormsDependent.get(i).getDependentPid() == iPID) {
+                result = this.databaseFormsDependent.get(i);
+                break;
             }
         }
-        return null;
+        return result;
     }
 
     /*
@@ -172,16 +172,16 @@ public class Database {
     public boolean removeImmigrant(int pid) {
         ArrayList<Immigrant> temp = new ArrayList<Immigrant>();
         boolean result = false;
-        for (int j = 0; j < databaseFormsImmigrant.size(); j++) {
-            if (databaseFormsImmigrant.get(j).getImmigrantPid() == pid) {
+        for (int j = 0; j < this.databaseFormsImmigrant.size(); j++) {
+            if (this.databaseFormsImmigrant.get(j).getImmigrantPid() == pid) {
                 updateLine("", dataNameForImmigrant, j + 1, 'd');
                 result = true;
             } else {
-                temp.add(databaseFormsImmigrant.get(j));
+                temp.add(this.databaseFormsImmigrant.get(j));
             }
         }
-        databaseFormsImmigrant.clear();
-        databaseFormsImmigrant = temp;
+        this.databaseFormsImmigrant.clear();
+        this.databaseFormsImmigrant = temp;
         return result;
     }
 
@@ -192,16 +192,16 @@ public class Database {
     public boolean removeDependent(int pid) {
         ArrayList<Dependent> temp = new ArrayList<Dependent>();
         boolean result = false;
-        for (int j = 0; j < databaseFormsDependent.size(); j++) {
-            if (databaseFormsDependent.get(j).getDependentPid() == pid) {
+        for (int j = 0; j < this.databaseFormsDependent.size(); j++) {
+            if (this.databaseFormsDependent.get(j).getDependentPid() == pid) {
                 updateLine("", dataNameForDependent, j + 1, 'd');
                 result = true;
             } else {
-                temp.add(databaseFormsDependent.get(j));
+                temp.add(this.databaseFormsDependent.get(j));
             }
         }
-        databaseFormsDependent.clear();
-        databaseFormsDependent = temp;
+        this.databaseFormsDependent.clear();
+        this.databaseFormsDependent = temp;
         return result;
     }
 
@@ -210,23 +210,24 @@ public class Database {
      * the system application record (SAR).
      */
     public boolean updateImmigrant(Immigrant immigrant) {
-        if (immigrant == null || databaseFormsImmigrant == null) {
+        if (immigrant == null || this.databaseFormsImmigrant == null) {
             return false;
         }
         ArrayList<Immigrant> temp = new ArrayList<Immigrant>();
         boolean result = false;
-        for (int j = 0; j < databaseFormsImmigrant.size(); j++) {
-            if (databaseFormsImmigrant.get(j).getImmigrantPid() == immigrant.getImmigrantPid()
-                    || immigrant.getSSNumber() == databaseFormsImmigrant.get(j).getSSNumber()) {
+        for (int j = 0; j < this.databaseFormsImmigrant.size(); j++) {
+            if (this.databaseFormsImmigrant.get(j).getImmigrantPid() == immigrant.getImmigrantPid()
+                    || immigrant.getSSNumber() == this.databaseFormsImmigrant.get(j).getSSNumber()) {
                 String newLine = setImmigranttoRecord(immigrant);
-                updateLine(newLine, dataNameForImmigrant, j + 1, 'u');
+                updateLine(newLine, this.dataNameForImmigrant, j + 1, 'u');
                 temp.add(immigrant);
+                result = true;
             } else {
-                temp.add(databaseFormsImmigrant.get(j));
+                temp.add(this.databaseFormsImmigrant.get(j));
             }
         }
-        databaseFormsImmigrant.clear();
-        databaseFormsImmigrant = temp;
+        this.databaseFormsImmigrant.clear();
+        this.databaseFormsImmigrant = temp;
         return result;
     }
 
@@ -235,23 +236,28 @@ public class Database {
      * the system application record (SAR).
      */
     public boolean updateDependent(Dependent dependent) {
-        if (dependent == null || databaseFormsDependent == null) {
+        System.out.println("It working");
+        if (dependent == null || this.databaseFormsDependent == null) {
             return false;
         }
+        System.out.println("It working 1");
         ArrayList<Dependent> temp = new ArrayList<Dependent>();
         boolean result = false;
-        for (int j = 0; j < databaseFormsDependent.size(); j++) {
-            if (databaseFormsDependent.get(j).getDependent().getDependentPid() == dependent.getDependentPid()
-                    || dependent.getSSNumber() == databaseFormsDependent.get(j).getSSNumber()) {
-                String newLine = setImmigranttoRecord(dependent);
+        System.out.println("It working");
+        for (int j = 0; j < this.databaseFormsDependent.size(); j++) {
+            if (this.databaseFormsDependent.get(j).getDependent().getDependentPid() == dependent.getDependentPid()
+                    || dependent.getSSNumber() == this.databaseFormsDependent.get(j).getSSNumber()) {
+                String newLine = setDependenttoRecord(dependent);
                 updateLine(newLine, dataNameForDependent, j + 1, 'u');
                 temp.add(dependent);
+                System.out.println("It working");
+                result = true;
             } else {
-                temp.add(databaseFormsDependent.get(j));
+                temp.add(this.databaseFormsDependent.get(j));
             }
         }
-        databaseFormsDependent.clear();
-        databaseFormsDependent = temp;
+        this.databaseFormsDependent.clear();
+        this.databaseFormsDependent = temp;
         return result;
     }
 
@@ -302,7 +308,9 @@ public class Database {
 
         if (status.equalsIgnoreCase("both is not system")) {
             dForm.setPrevClaim(true);
-            iForm.setImmigrantPid(dForm.getDependentPid());
+            iForm.setDependentPid(dForm.getDependentPid());
+            this.databaseFormsImmigrant.add(iForm);
+            this.databaseFormsDependent.add(dForm);
             addImmigrantToData(iForm);
             addDependentToData(dForm);
         } else if (status.equalsIgnoreCase("Information need update")) {
@@ -313,7 +321,7 @@ public class Database {
                     return false;
                 }
                 dForm.setPrevClaim(true);
-                iForm.setImmigrantPid(dForm.getDependentPid());
+                iForm.setDependentPid(dForm.getDependentPid());
                 updateImmigrant(iForm);
                 updateDependent(dForm);
             }
@@ -324,14 +332,16 @@ public class Database {
                     return false;
                 }
                 dForm.setPrevClaim(true);
-                iForm.setImmigrantPid(dForm.getDependentPid());
+                iForm.setDependentPid(dForm.getDependentPid());
+                this.databaseFormsImmigrant.add(iForm);
                 addImmigrantToData(iForm);
                 updateDependent(dForm);
             }
         } else if (status.equalsIgnoreCase("Dependent is not system")) {
             if ((iForm = getDataImmigrant(dForm.getImmigrantPid())) != null) {
                 dForm.setPrevClaim(true);
-                iForm.setImmigrantPid(dForm.getDependentPid());
+                iForm.setDependentPid(dForm.getDependentPid());
+                this.databaseFormsDependent.add(dForm);
                 updateImmigrant(iForm);
                 addDependentToData(dForm);
             }
@@ -394,7 +404,7 @@ public class Database {
             BufferedReader br = new BufferedReader(fr);
 
             while ((currentLine = br.readLine()) != null) {
-                line++;
+                ++line;
                 if (changeline != line) {
                     pw.println(currentLine);
                 } else {
