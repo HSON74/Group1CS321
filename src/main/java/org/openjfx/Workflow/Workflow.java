@@ -309,20 +309,26 @@ public class Workflow {
                     count++;
                     newForm.updateStatus(FormStatus.INPROGRESS);
                     System.out.println(25);
-                } else
-                    flag = 1;
+                } 
+                else flag = 1;
             }
             if (Helper.nullStringNull(fields.get(26).getText()) != null) {
-                newForm.getDependent().setImmigrantPid(Integer.parseInt(fields.get(26).getText()));
-                count++;
-                newForm.updateStatus(FormStatus.INPROGRESS);
-                System.out.println(26);
+                if (Helper.immigrantPidCheck(newForm.getImmigrant(), Integer.parseInt(fields.get(26).getText())) == 0) {
+                    newForm.getDependent().setImmigrantPid(Integer.parseInt(fields.get(26).getText()));
+                    count++;
+                    newForm.updateStatus(FormStatus.INPROGRESS);
+                    System.out.println(26);
+                }
+                else flag = 1;
             }
             if (Helper.nullStringNull(fields.get(27).getText()) != null) {
-                newForm.getDependent().setDependentPid(Integer.parseInt(fields.get(27).getText()));
-                count++;
-                newForm.updateStatus(FormStatus.INPROGRESS);
-                System.out.println(27);
+                if (Helper.dependentPidCheck(newForm.getImmigrant(), Integer.parseInt(fields.get(27).getText())) == 0) {
+                    newForm.getDependent().setDependentPid(Integer.parseInt(fields.get(27).getText()));
+                    count++;
+                    newForm.updateStatus(FormStatus.INPROGRESS);
+                    System.out.println(27);
+                }
+                else flag = 1;
             }
             if (Helper.nullStringNull(fields.get(28).getText()) != null) {
                 newForm.getDependent().setRace(fields.get(28).getText());

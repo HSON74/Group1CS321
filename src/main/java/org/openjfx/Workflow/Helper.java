@@ -1,5 +1,7 @@
 package org.openjfx.Workflow;
 
+import org.openjfx.Business.*;
+
 public class Helper {
     public static int checkAge(int i) {
         if ((i > 0) && (i <= 100)) {
@@ -220,5 +222,15 @@ public class Helper {
             return line;
         else
             return null;
+    }
+
+    public static int immigrantPidCheck(Immigrant immigrant, int i) {
+        if (immigrant.getImmigrantPid() == i) return 1;
+        else return 0;
+    }
+
+    public static int dependentPidCheck(Immigrant immigrant, int i) {
+        if (immigrant.getDependentPid() == i) return 1;
+        else return 0;
     }
 }
