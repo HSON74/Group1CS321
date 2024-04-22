@@ -63,9 +63,9 @@ public class Database {
                 scr.close();
             } else {
                 datafile.createNewFile();
-                BufferedWriter writer = new BufferedWriter(new FileWriter(datafile));
+                // BufferedWriter writer = new BufferedWriter(new FileWriter(datafile));
                 System.err.println("File Exist not exist");
-                writer.close();
+                // writer.close();
             }
             // Access to the dependent record and create a temp database array for
             // application.
@@ -82,10 +82,10 @@ public class Database {
                 dscr.close();
             } else {
                 datafiled.createNewFile();
-                BufferedWriter dwriter = new BufferedWriter(new FileWriter(datafiled));
-                dscr = new Scanner(datafiled);
+                // BufferedWriter dwriter = new BufferedWriter(new FileWriter(datafiled));
+                // dscr = new Scanner(datafiled);
                 System.err.println("File Exist not exist");
-                dwriter.close();
+                // dwriter.close();
             }
 
         } catch (Exception e) {
@@ -360,7 +360,7 @@ public class Database {
 
         String dataStringImmigrant = setImmigranttoRecord(immigrantForm);
         try {
-            Files.write(Paths.get(dataNameForImmigrant),
+            Files.write(Paths.get(this.dataNameForImmigrant),
                     dataStringImmigrant.getBytes(),
                     StandardOpenOption.APPEND);
         } catch (Exception e) {
@@ -376,7 +376,7 @@ public class Database {
     private boolean addDependentToData(Dependent dependentForm) {
         String dataStringDependent = setDependenttoRecord(dependentForm);
         try {
-            Files.write(Paths.get(dataNameForDependent),
+            Files.write(Paths.get(this.dataNameForDependent),
                     dataStringDependent.getBytes(),
                     StandardOpenOption.APPEND);
         } catch (Exception e) {

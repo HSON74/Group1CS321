@@ -260,12 +260,13 @@ public class Approval {
                 });
         rejectButton.setOnAction(e -> {
             if (isAdd) {
+                this.approvalForm = form;
                 setDatabase("ImmigrantRecord", "DependentRecord");
                 database.removeDependent(form.getImmigrant().getImmigrantPid());
                 database.removeDependent(form.getDependent().getDependentPid());
                 isAdd = false;
             }
-            approvalWorkflow.getReview().rDisplay(this.getForm(), this.getWorkflow(), primaryStage);
+            approvalWorkflow.getReview().rDisplay(approvalForm, approvalWorkflow, primaryStage);
             primaryStage.setScene(approvalWorkflow.getReview().rScene);
         });
 
