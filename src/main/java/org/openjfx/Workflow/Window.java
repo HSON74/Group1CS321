@@ -1,12 +1,18 @@
 package org.openjfx.Workflow;
 
 import javafx.application.*;
-import javafx.event.*;
+
+import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyEvent;
+
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.*;
+
 
 public class Window extends Application {
     private Workflow WindowWorkflow;
@@ -20,9 +26,13 @@ public class Window extends Application {
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Immigrant dependent System");
         Button b = new Button();
-        b.setText("Start a new Form");
-        StackPane layout = new StackPane();
-        layout.getChildren().add(b);
+        b.setText("Register a Dependent");
+        GridPane layout = new GridPane();
+        Text title = new Text("Welcome to the Registrar! \nPlease click the button below to register a new dependent.");
+        title.setFont(Font.font("seriff", FontWeight.NORMAL, FontPosture.ITALIC, 25));
+        layout.add(title, 3, 0);
+        layout.add(b, 3,50);
+        layout.setAlignment(Pos.CENTER);
         Scene scene = new Scene(layout, 960, 540);
         scene.getRoot().setStyle("-fx-font-family: 'serif'");
         primaryStage.setScene(scene);

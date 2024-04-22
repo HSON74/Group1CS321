@@ -5,12 +5,13 @@ import java.util.ArrayList;
 import org.openjfx.Business.Form;
 import org.openjfx.Business.FormStatus;
 
-import javafx.geometry.Pos;
+
 import javafx.scene.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.*;
 
 import javafx.stage.Stage;
 
@@ -26,11 +27,15 @@ public class DataEntry {
         this.systemForm = form;
         this.DataEntryWorkflow = system;
 
+        //buttons
         Button submit = new Button(); //submit button
         submit.setText("Submit Data Entry Form");
+        Button clear = new Button();//clear button
+        clear.setText("Clear Form");
         GridPane layout = new GridPane();
-        layout.setAlignment(Pos.CENTER);
-        layout.add(submit, 20, 20);
+        //layout.setAlignment(Pos.CENTER);
+        layout.add(submit, 20, 30);
+        layout.add(clear, 0, 30);
         String [] label_names = {"First Name: ", "Middle Name: ", "Last Name: ", "Age: ", "Birth Month: ",
              "Birth Day: ", "Birth Year: ","SS Number: ", "Immigrant PID: ", "Dependent PID: ", "Race: ",
             "Gender: ", "Married: ", "Phone Number: ", "Father's Name: ", "Mother's Name: ",
@@ -54,9 +59,12 @@ public class DataEntry {
             if (j == 1){ //second iteration
                 person = "Dependent ";
             }
+            Text title = new Text("\nInput " + person + " Information Below: \n");
+            title.setFont(Font.font("seriff", FontWeight.BOLD, FontPosture.REGULAR, 20));
+            layout.add(title, 0, ++col);
         for (int i=0; i<label_names.length; i++){ //match the label names with textFields
 
-            Label label = new Label(person + label_names[i]);
+            Label label = new Label("\t" + person + label_names[i]);
             TextField textField= new TextField ();
             textField.setPromptText(prompt+label_names[i] + " ex: " + format[i]);//set the prompt for the textfield as a guide to the user
             
@@ -69,7 +77,7 @@ public class DataEntry {
             layout.add(textField, row++, col);
             fields.add(textField); //add the textfield to the arrayList of textfields
             if ((j ==1) && ((i== label_names.length-1))){ //if on the last iteration and for dependent, add previously claimed
-                Label label2 = new Label(person + "Previously Claimed: ");
+                Label label2 = new Label("\t" + person + "Previously Claimed: ");
                 TextField textField2= new TextField ();
                 textField2.setPromptText("Previously Claimed: " + " ex: " + "True");
                 fields.add(textField2);
@@ -79,23 +87,47 @@ public class DataEntry {
             
         }
         
+        
     }
-        dataEntryScene = new Scene(layout, 1170, 700);
-        dataEntryScene.getRoot().setStyle("-fx-font-family: 'serif'");
-        primaryStage.setScene(dataEntryScene);
+    dataEntryScene = new Scene(layout, 1920,1080);
+    dataEntryScene.getRoot().setStyle("-fx-font-family: 'serif'");
+    
+    primaryStage.setScene(dataEntryScene);
+    
+    primaryStage.setMaximized(true);
         
         /*On pressing the submit button do this .... */
         submit.setOnAction(e -> {
-            
-           
-        systemForm.updateStatus(FormStatus.COMPLETE);
         systemForm.setFields(fields);
+        int len = systemForm.getFields().size();
+        systemForm.updateStatus(FormStatus.EMPTY);
+        int empty =0;
+        for (int i = 0; i<len; i++){
+            if (systemForm.getFields().get(i).getText().length()> 0){
+                systemForm.updateStatus(FormStatus.INPROGRESS);
+                
+            }
+            else{
+                empty ++;
+            }
+        }
+            if ( empty ==0 ){
+                systemForm.updateStatus(FormStatus.COMPLETE);
+            }
+        
         DataEntryWorkflow.getReview().revalidate(form, system);
         DataEntryWorkflow.getReview().rDisplay(form, system, primaryStage);//hand the form off to the review stage
         primaryStage.setScene(DataEntryWorkflow.getReview().rScene);
             
         });
 
+
+        //clear button
+        clear.setOnAction(c ->{
+            
+                dataEntryScene(systemForm, DataEntryWorkflow, primaryStage);
+                
+        });
         
         primaryStage.show();
     }
