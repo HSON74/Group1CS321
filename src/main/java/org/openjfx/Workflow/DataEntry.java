@@ -59,14 +59,16 @@ public class DataEntry {
             if (j == 1){ //second iteration
                 person = "Dependent ";
             }
-            Text title = new Text("\nInput " + person + " Information Below: \n");
+            Text title = new Text("\nInput " + person + " Information Below: ");
             title.setFont(Font.font("seriff", FontWeight.BOLD, FontPosture.REGULAR, 20));
             layout.add(title, 0, ++col);
+            Text instruction = new Text("\t*All fields are required.* \n");
+            layout.add(instruction, 0, ++col);
         for (int i=0; i<label_names.length; i++){ //match the label names with textFields
 
             Label label = new Label("\t" + person + label_names[i]);
             TextField textField= new TextField ();
-            textField.setPromptText(prompt+label_names[i] + " ex: " + format[i]);//set the prompt for the textfield as a guide to the user
+            textField.setPromptText("ex: " + format[i]);//set the prompt for the textfield as a guide to the user
             
            //3 items per row
             if (i%3 ==0){
@@ -79,7 +81,7 @@ public class DataEntry {
             if ((j ==1) && ((i== label_names.length-1))){ //if on the last iteration and for dependent, add previously claimed
                 Label label2 = new Label("\t" + person + "Previously Claimed: ");
                 TextField textField2= new TextField ();
-                textField2.setPromptText("Previously Claimed: " + " ex: " + "True");
+                textField2.setPromptText( "ex: " + "True");
                 fields.add(textField2);
                 layout.add(label2, 0, ++col);
                 layout.add(textField2, 1, col);
