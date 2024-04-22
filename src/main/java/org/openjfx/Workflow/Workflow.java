@@ -313,7 +313,7 @@ public class Workflow {
                 else flag = 1;
             }
             if (Helper.nullStringNull(fields.get(26).getText()) != null) {
-                if (Helper.immigrantPidCheck(newForm.getImmigrant(), Integer.parseInt(fields.get(26).getText())) == 0) {
+                if (Helper.immigrantPidCheck(newForm.getImmigrant(), Integer.parseInt(fields.get(26).getText())) == 1) {
                     newForm.getDependent().setImmigrantPid(Integer.parseInt(fields.get(26).getText()));
                     count++;
                     newForm.updateStatus(FormStatus.INPROGRESS);
@@ -322,7 +322,7 @@ public class Workflow {
                 else flag = 1;
             }
             if (Helper.nullStringNull(fields.get(27).getText()) != null) {
-                if (Helper.dependentPidCheck(newForm.getImmigrant(), Integer.parseInt(fields.get(27).getText())) == 0) {
+                if (Helper.dependentPidCheck(newForm.getImmigrant(), Integer.parseInt(fields.get(27).getText())) == 1) {
                     newForm.getDependent().setDependentPid(Integer.parseInt(fields.get(27).getText()));
                     count++;
                     newForm.updateStatus(FormStatus.INPROGRESS);

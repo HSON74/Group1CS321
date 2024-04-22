@@ -217,13 +217,6 @@ public class Helper {
             return 0;
     }
 
-    public static String phoneNumberCheck(String line) {
-        if (line.length() == 10)
-            return line;
-        else
-            return null;
-    }
-
     public static int immigrantPidCheck(Immigrant immigrant, int i) {
         if (immigrant.getImmigrantPid() == i) return 1;
         else return 0;
