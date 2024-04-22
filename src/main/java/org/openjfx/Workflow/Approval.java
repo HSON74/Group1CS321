@@ -259,15 +259,34 @@ public class Approval {
                     }
                 });
         rejectButton.setOnAction(e -> {
-            if (isAdd) {
-                this.approvalForm = form;
-                setDatabase("ImmigrantRecord", "DependentRecord");
-                database.removeImmigrant(form.getImmigrant().getImmigrantPid());
-                database.removeDependent(form.getDependent().getDependentPid());
-                isAdd = false;
-            }
-            approvalWorkflow.getReview().rDisplay(approvalForm, approvalWorkflow, primaryStage);
-            primaryStage.setScene(approvalWorkflow.getReview().rScene);
+            Stage minStage = new Stage();
+            minStage.setTitle("Result of Form");
+            GridPane tempGridPane = new GridPane();
+            Text myText = new Text(
+                    "If you reject the form.\n You need to be click approval button when you get back.\n");
+
+            Button yes = new Button("Yes");
+            Button no = new Button("No");
+            tempGridPane.add(myText, 1, 1);
+            tempGridPane.add(yes, 0, 2);
+            tempGridPane.add(no, 2, 2);
+
+            yes.setOnAction(d -> {
+                if (isAdd) {
+                    this.approvalForm = form;
+                    setDatabase("ImmigrantRecord", "DependentRecord");
+                    database.removeImmigrant(form.getImmigrant().getImmigrantPid());
+                    database.removeDependent(form.getDependent().getDependentPid());
+                    isAdd = false;
+                }
+                approvalWorkflow.getReview().rDisplay(approvalForm, approvalWorkflow, primaryStage);
+                primaryStage.setScene(approvalWorkflow.getReview().rScene);
+            });
+            no.setOnAction(d -> minStage.close());
+            rejectScene = new Scene(tempGridPane, 250, 250);
+            minStage.setScene(rejectScene);
+            minStage.showAndWait();
+
         });
 
         // Scene set to application window
