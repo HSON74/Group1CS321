@@ -262,7 +262,7 @@ public class Approval {
             if (isAdd) {
                 this.approvalForm = form;
                 setDatabase("ImmigrantRecord", "DependentRecord");
-                database.removeDependent(form.getImmigrant().getImmigrantPid());
+                database.removeImmigrant(form.getImmigrant().getImmigrantPid());
                 database.removeDependent(form.getDependent().getDependentPid());
                 isAdd = false;
             }
