@@ -284,7 +284,7 @@ public class Approval {
                 primaryStage.setScene(approvalWorkflow.getReview().rScene);
             });
             no.setOnAction(d -> minStage.close());
-            rejectScene = new Scene(tempGridPane, 500, 250);
+            rejectScene = new Scene(tempGridPane, 270, 150);
             minStage.setScene(rejectScene);
             minStage.showAndWait();
 
