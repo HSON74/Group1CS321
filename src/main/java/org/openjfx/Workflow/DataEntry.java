@@ -45,7 +45,7 @@ public class DataEntry {
             "1999", "222880000", "1893", "5833", "Caucasion", "Male",
             "True", "8889563400", "Jason Doe", "Katherine Doe", 
             "4400 University Dr, Fairfax, VA 22030", "True" };
-        String prompt = "Enter ";
+        
         
         //col and row to set the position to place the nodes on the gridpane
         int col =0;
