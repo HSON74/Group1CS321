@@ -157,9 +157,9 @@ public class Helper {
     }
 
     public static Boolean yntoBoolean(String yn) {
-        if (yn.equalsIgnoreCase("Yes") || yn.equalsIgnoreCase("True")) {
+        if ("Yes".equalsIgnoreCase(yn) || "True".equalsIgnoreCase(yn)) {
             return true;
-        } else if (yn.equalsIgnoreCase("No") || yn.equalsIgnoreCase("False")) {
+        } else if ("No".equalsIgnoreCase(yn) || "False".equalsIgnoreCase(yn)) {
             return false;
         }
         return null;
@@ -186,7 +186,7 @@ public class Helper {
     }
 
     public static String nullStringCheck(String myString) {
-        if (myString == null || myString.equalsIgnoreCase("null") || myString.equalsIgnoreCase("N/A")) {
+        if (myString == null || "null".equalsIgnoreCase(myString) || "N/A".equalsIgnoreCase(myString)) {
             return "N/A";
         } else {
             return myString;
@@ -194,8 +194,8 @@ public class Helper {
     }
 
     public static String nullStringNullString(String myString) {
-        if (myString == null || myString.equalsIgnoreCase("null") || myString.equalsIgnoreCase("N/A")
-                || myString.equalsIgnoreCase("")) {
+        if (myString == null || "null".equalsIgnoreCase(myString) || "N/A".equalsIgnoreCase(myString)
+                || "".equalsIgnoreCase(myString)) {
             return "null";
         } else {
             return myString;
@@ -203,7 +203,7 @@ public class Helper {
     }
 
     public static String nullStringNull(String myString) {
-        if (myString.equals("")) {
+        if ("".equals(myString)) {
             return null;
         } else {
             return myString;

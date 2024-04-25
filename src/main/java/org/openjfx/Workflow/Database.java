@@ -306,14 +306,14 @@ public class Database {
         Dependent dForm = inputForm.getDependent();
         String status = checkData(iForm.getImmigrantPid(), dForm.getDependentPid());
 
-        if (status.equalsIgnoreCase("both is not system")) {
+        if ("both is not system".equalsIgnoreCase(status)) {
             dForm.setPrevClaim(true);
             iForm.setDependentPid(dForm.getDependentPid());
             this.databaseFormsImmigrant.add(iForm);
             this.databaseFormsDependent.add(dForm);
             addImmigrantToData(iForm);
             addDependentToData(dForm);
-        } else if (status.equalsIgnoreCase("Information need update")) {
+        } else if ("Information need update".equalsIgnoreCase(status)) {
             if ((dForm = getDataDependent(dForm.getDependentPid())) != null
                     && (iForm = getDataImmigrant(dForm.getImmigrantPid())) != null) {
                 Dependent tempDform = getDataDependent(dForm.getDependentPid());
@@ -325,7 +325,7 @@ public class Database {
                 updateImmigrant(iForm);
                 updateDependent(dForm);
             }
-        } else if (status.equalsIgnoreCase("Immigrant is not system")) {
+        } else if ("Immigrant is not system".equalsIgnoreCase(status)) {
             Dependent tempDform = getDataDependent(dForm.getDependentPid());
             if (tempDform != null) {
                 if (tempDform.getPrevClaim() && !dForm.getPrevClaim()) {
@@ -337,7 +337,7 @@ public class Database {
                 addImmigrantToData(iForm);
                 updateDependent(dForm);
             }
-        } else if (status.equalsIgnoreCase("Dependent is not system")) {
+        } else if ("Dependent is not system".equalsIgnoreCase(status)) {
             if ((iForm = getDataImmigrant(dForm.getImmigrantPid())) != null) {
                 dForm.setPrevClaim(true);
                 iForm.setDependentPid(dForm.getDependentPid());

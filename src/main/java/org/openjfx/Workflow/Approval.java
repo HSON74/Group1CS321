@@ -457,7 +457,7 @@ public class Approval {
                     missingDependent = ", Age";
                 }
             } else if (approvalForm.getDependent().getAddress() == null) {
-                if (missing.equalsIgnoreCase("")) {
+                if ("".equalsIgnoreCase(missing)) {
                     if (!missingImmigrant.equalsIgnoreCase("")) {
                         missingDependent = "; and ";
                     }
@@ -484,7 +484,7 @@ public class Approval {
                     missingDependent = ", Race";
                 }
             } else if (approvalForm.getDependent().getGender() == null) {
-                if (missing.equalsIgnoreCase("")) {
+                if ("".equalsIgnoreCase(missing)) {
                     if (!missingImmigrant.equalsIgnoreCase("")) {
                         missingDependent = "; and ";
                     }
